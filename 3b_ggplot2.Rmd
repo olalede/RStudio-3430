@@ -22,6 +22,7 @@ Area Chart : geom_area()
 
 
 
+2. Run this code in your head and predict what the output will look like. Then, run the code in R and check your predictions:
 
 ```{r}
 library(tidyverse)
