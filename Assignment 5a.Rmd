@@ -1,0 +1,107 @@
+---
+title: "Assignment 5a"
+author: "Damilare Olaleye"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#### Data Manipulation with dplyr
+
+We'll work with a dataset ```flights``` on all 336,776 flights departing from New York in 2014
+
+**Get this data by installing and loading the ```nycflights13``` package.**
+
+```{r}
+## install and load the nycflights13 package
+library(nycflights13)
+```
+
+Your instructor will ask you to look at a specific row of the flights data.  
+
+**What was the carrier for this flight?  What day was this flight?  When was it scheduled to depart?  Did it depart on time?** 
+
+```{r}
+## save row of data frame flights to variable FLIGHT
+## display FLIGHT to answer questions
+
+flights[99, ]
+```
+
+**Load the tidyverse package that includes the dplyr package.**
+
+```{r}
+## load tidyverse
+library(tidyverse)
+```
+
+Basic dplyr verbs:  filter, arrange, select, mutate, summarize
+
+The ```filter``` verb
+
+**Describe briefly what filter does in a data frame**
+
+**Use filter to find the flights that departed on May 5**
+
+```{r}
+# flights departing on May 5
+filter(flights, month == 6, day == 5)
+```
+
+**Save the "May 5" flights data frame in the data frame may5 **
+
+```{r}
+## save may 5 flights in data frame called may5
+may5 <- filter(flights, month == 6, day ==5)
+may5
+```
+
+**Find the flights where the actual departure time is after 9 pm**
+
+```{r}
+## flights with actual departure after 9 pm
+filter(flights, dep_time > 2100)
+
+```
+
+**Find the flights that depart between 10 and 20 minutes late**
+
+```{r}
+## flights that depart between 10 and 20 minutes
+filter(flights, (dep_time - sched_dep_time >= 10 & dep_time - sched_dep_time <= 20))
+```
+
+**Find the flights during February or April**
+
+```{r}
+## flights during February or April
+filter(flights, (month == 2 | month == 4))
+
+```
+
+**Find the flights that are not Delta**
+
+```{r}
+## flights that are not Delta
+filter(flights, carrier != "DL")
+```
+
+**Find the flights that arrived more than two hours late, but didn't leave late**
+
+```{r}
+## flights arriving two hours late but didn't leave late
+filter(flights, dep_delay <= 0, arr_delay > 120)
+```
+
+**Find the flights that were delayed at least an hour, but made up over 30 minutes in flight**
+
+```{r}
+## flights delayed at least an hour but made up over 30 minutes in flight
+filter(flights, dep_delay >= 60 & arr_delay <= 30 )
+```
+
+
+
+

@@ -1,0 +1,183 @@
+---
+title: "Vectors and Data Frames"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#### Introduce data types
+
+Different data types such as numeric, character, logical, etc.
+
+Data for the day is a table of the top grossing movies for 2019. 
+
+#### Vector 
+
+```{r}
+title <- c("Avengers", "The Lion King", "Toy Story 4", "Captain Marvel", "Spider-Man", "Aladdin", "Us", "John Wick", "How to Train Your Dragon", "Secret Life of Pets 2")
+
+
+```
+
+Display this vector: 
+```{r}
+title
+```
+
+Define a numeric vector -- total gross in millions,
+
+```{r}
+gross <-c(858, 512, 427, 426, 380, 353, 175, 170, 161, 157)
+```
+
+Working with vectors:
+
+use square brackets to index specific values.
+
+```{r}
+1:3
+title[1:3]
+gross[c(2, 5, 7)]
+```
+
+Illustrate some functions on vectors
+```{r}
+mean(gross)
+median(gross)
+max(gross)
+sd(gross)
+```
+
+These functions only work for numeric data
+```{r}
+mean(title)
+median(title)
+```
+
+```{r}
+sqrt(-2)
+```
+
+Try sorting ...
+```{r}
+sort(title)
+```
+
+If you sort alphabetically, what is the 4th movie title?
+
+```{r}
+sort(title)[4]
+```
+
+Introduce Logical Variables.
+
+Which movies gross more than 300 million?
+
+Identify the movies that satisfy this condition 
+
+```{r}
+large <- gross > 300
+```
+
+Take title variable -- subset using the logical vector. 
+
+```{r}
+title[large]
+```
+
+Some operations with vectors.
+
+Write down the gross revenues in dollars. 
+
+```{r}
+newgross <- gross * 1e6
+newgross
+```
+
+Suppose each of the top ten movies in 2020 earn 10 more million dollars
+
+```{r}
+gross + 10
+```
+
+work with two numeric vectors
+
+```{r}
+opening <- c(357, 191, 120, 153, 92, 91, 56, 55, 46)
+```
+
+What fraction of the total gross was earned in the opening weekend? Which movie had the highest fraction?
+
+```{r}
+frac <- opening / gross 
+title[frac == max(frac)]
+```
+
+Some times you want to work with vectors of different sizes
+
+```{r}
+x <- 1:4
+y <- 1:5
+```
+
+```{r}
+x+y
+```
+
+```{r}
+x
+y
+```
+
+Data Frame
+
+A data frame is a rectangular array of data where rows are cases (people) and the colums are variables which can be different types. 
+
+```{r}
+(movies <- data.frame(title, opening, newgross))
+```
+
+selecting portions of data frame. 
+use the bracket notation.
+
+```{r}
+movies[2, 3]
+```
+
+```{r}
+movies[2,]
+```
+
+```{r}
+movies[c(2, 3, 5), ]
+```
+
+```{r}
+movies[c(1,5), c(2:3)]
+```
+
+
+Many ways to refer to varaibles in a data frame. 
+
+```{r}
+movies[, 3]
+```
+
+```{r}
+movies[, "newgross"]
+```
+
+```{r}
+movies$newgross
+```
+
+Try some subsetting using logical varaibles.
+
+Choose the rows of the movies which opened for less than 100 million dollars
+
+```{r}
+movies[movies$opening < 100, ]
+```
+ movies[c(T,T,T, F, F, F, F, F, F, F)]

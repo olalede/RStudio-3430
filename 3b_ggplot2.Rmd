@@ -1,0 +1,126 @@
+---
+title: "2 ACTION"
+author: "Damilare Olaleye"
+date: "9/12/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE)
+```
+
+1. What geom would you use to draw a line chart? A boxplot? A histogram? An area chart?
+
+Answer: 
+
+Line chart : geom_path()/geom_line()
+Boxplot    : geom_boxplot()
+Histogram  ; geom_histogram()
+Area Chart : geom_area()
+
+
+
+
+```{r}
+library(tidyverse)
+ggplot(
+data = mpg,
+mapping = aes(x = displ, y = hwy, color = drv)
+) +
+geom_point() +
+geom_smooth(se = FALSE)
+```
+
+Answer: The code would produce a scatterplot with a rough line that goes through the points. The x axis is displ and y is hwy, and the points and the lines are of different colors based on the categories of drv.
+
+
+3. What does show.legend = FALSE do? What happens if you
+remove it? Why do you think I used it earlier in the chapter?
+
+Answer: Legend specifies what the elements in a graph represents. For instance, different colors in a line graph could represent different entities and the names/labels of those are shown on the side of the graph as graph legend. So, setting show.legend = FALSE would hide this information.
+Using legend is helpful as it makes the elements in a graph more informational. Legend explains the mapping between levels and values.
+
+
+4. What does the se argument to geom_smooth() do?
+
+Answer: According to the documentation, se stands for smooth edges. se adds error bands to the lines.
+
+5. Will these two graphs look different? Why/why not?
+
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) +
+geom_point() +
+geom_smooth()
+
+ggplot() +
+geom_point(
+data = mpg,
+mapping = aes(x = displ, y = hwy)
+) +
+geom_smooth(
+data = mpg,
+mapping = aes(x = displ, y = hwy)
+)
+
+Answer: The two graphs will look the same. 
+
+On the the first ggplot execution, the arguments inside of ggplot uses the data mpg, maps x and y to displ and hwy respectively. The addition of geom_point() and geom_smooth specifies which graphs to use in the execution.
+
+The second ggplot execution specifies the arguments and the mapping inside of geom_point and geom_smooth which results in the same graph as the one above as all the mapping and the data used is same as the first one.
+
+
+6. Re-create the R code necessary to generate the following graphs.
+
+Answer:
+
+1.
+```{r}
+ggplot(data = mpg, aes(x = displ, y = hwy)) + geom_point() + geom_smooth(se = FALSE)
+```
+
+2.
+```{r}
+ggplot(data = mpg, aes(x = displ, y = hwy)) + geom_point() + geom_smooth(se = FALSE, mapping = aes(group = drv))
+
+```
+
+3. 
+```{r}
+ggplot(data = mpg, aes(x = displ, y = hwy, color = drv)) + geom_point() + geom_smooth(se = FALSE)
+
+```
+
+4.
+```{r}
+ggplot(data = mpg, aes(x = displ, y = hwy)) + geom_point(mapping = aes(color = drv)) + geom_smooth(se = FALSE)
+
+```
+
+5.
+```{r}
+ggplot(data = mpg, aes(x = displ, y = hwy)) + geom_point(mapping = aes(color = drv)) + geom_smooth(se = FALSE, aes(linetype = drv))
+
+```
+
+6.
+```{r}
+  ggplot(data = mpg, aes(x = displ, y = hwy)) + geom_point(color = "white", size = 4) + geom_point(aes(color = drv))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

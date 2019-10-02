@@ -1,0 +1,66 @@
+---
+title: "Baseball_Cards, Assignment 1b"
+author: "Jim Albert, Damilare Olaleye"
+date: "August 21, 2017, August 29, 2019 "
+output: html_document
+---
+
+## Baseball Card Collection Problem
+
+Your instructor used to collect baseball cards which motivates this simulation exercise.
+
+Suppose a set of baseball cards are numbered from 1 to N.  You purchase M cards where each card is equally likely to be numbered 1 through N.
+
+What is the chance you buy a complete set?
+
+Set values of N and M:
+
+```{r}
+N <- 30
+M <- 150
+```
+
+We buy M cards, where each card is equally likely to be 1, ..., N.  Store the purchases in the vector purchased.
+
+```{r}
+purchased <- sample(N, size=M, replace=TRUE)
+purchased
+```
+
+Graph the numbers of the purchased cards.
+
+```{r}
+library(ggplot2)
+ggplot(data.frame(Card_Number=purchased), 
+       aes(Card_Number)) +
+  geom_bar()
+```
+
+We identify the unique cards that are purchased.  If the number of unique cards is equal to N, we have a complete set; otherwise the set is not complete.
+
+```{r}
+U <- unique(purchased)
+ifelse(length(U) == N, "complete set", "not complete")
+```
+
+I repeat this exercise 100 times -- each time, I purchase N cards, identify the unique ones, and see if I have a complete set.  When I am done, I have a vector of "complete set" and "not complete".
+
+```{r}
+R <- replicate(100, expr = {
+  purchased <- sample(N, size=M, replace=TRUE)
+  U <- unique(purchased)
+  ifelse(length(U) == N, "complete set", "not complete")
+})
+R
+```
+
+I construct a frequency table of the outcomes and graph the data.
+
+```{r}
+(freq <- table(R))
+ggplot(data.frame(R), aes(R)) + geom_bar()
+```
+
+#### Conclusion
+
+With the values of N and M chosen, it is pretty likely that I have a complete set.

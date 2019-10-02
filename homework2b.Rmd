@@ -1,0 +1,106 @@
+---
+title: "Movies Dataset"
+author: "Olaleye Damilare"
+date: "9/5/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+
+movies <- read_csv("http://www-math.bgsu.edu/~albert/3430/top100movies.csv")
+
+
+```
+
+1.) Currently Runtime is a character variable. Create a new numeric variable Rtime in the data frame by typing
+
+```{r}
+movies$Rtime <- as.numeric(gsub('min', '',       movies$Runtime))
+```
+
+2.) List the data (all variables) for the movies that have been made since 2011.
+
+```{r}
+movies[movies$Year > 2011, ]
+
+
+```
+
+3.) By using R operations, find the movie with the longest running time, and find the movie with the shortest running time.
+
+```{r}
+movies[movies$Rtime == max(movies$Rtime, na.rm = TRUE), ]
+
+```
+
+```{r}
+movies[movies$Rtime == min(movies$Rtime, na.rm = TRUE), ]
+```
+
+4.) List only the titles for the movies rated G.
+```{r}
+rating <- movies[movies$Rated == "G",]
+rating
+```
+
+5.) Create a new variable that rounds the imdbVotes variable to the nearest 100,000.
+
+```{r}
+roundimdb <- round(movies$imdbVotes/100000, 1) * 100000
+roundimdb
+```
+
+
+6.) Construct a histogram of the Rtime variable. Based on the graph, write a short paragraph about the distribution of run times, talking about shape, “average”, and spread, and any unusual features.
+
+```{r}
+ggplot(movies, aes(Rtime)) + geom_histogram()
+```
+Most movies are of length 90 to 140 minutes that is, about an hour and a half to little over two hours. In my opinion this is the best length for a movie to play out the story and to also give the audience a great experience that isn’t too short or too long which could potentially wear out the audience. Only a handful of the movies are of length more than 3 hours.
+
+7.) Construct a frequency table of the Rated variable. What is the most common rating (the mode)? What fraction of the movies had this rating?
+
+```{r}
+table(movies$Rated)
+```
+44% of the movies were R rated. It makes sense that most of the movies are R rated because the percentage of adults that goes out to watch movies are usually higher than that of kids, and R rated movies are usually for adults. 
+
+
+8.) Construct a frequency table of the Year variable, and use a barplot to graph these frequencies. Generally, these top 100 movies tended to be made during what years?
+```{r}
+(YearTable <- table(movies$Year))
+```
+
+```{r}
+barplot(YearTable, main = "Frequency of Year", xlab = "Year" )
+```
+In between the year 1990 and 2000, we can see that there were higher numbers of top 100 movies than any other time period.
+
+
+9.) To see how the running time of the movies have changed over time, use the cut variable to divide the Year variable into “early” and “late” years. Use a graph to compare the running times of the two groups and summarize each group by the median. What have you learned about the relationship between running time and year.
+
+```{r}
+RtimeCut <- cut(movies$Rtime, 50)
+RtimeCut
+```
+
+```{r}
+plot(RtimeCut)
+
+```
+From the graph we can see that the Running time gradually increased as the years passed by, but for the most part, most movies were between 120 - 150 minutes in both the halves.
+
+10.) Construct a scatterplot of the two measures Metascore and imdbRating. What pattern do you see in this plot, and what does that say about the relationship between these two variables. Are you surprised? Explain. 
+
+```{r}
+ggplot(movies, aes(Metascore, imdbRating)) + geom_point()
+```
+In the scatterplot we can see that the Metascore for the imdbRating is crowed between 70 to 95.

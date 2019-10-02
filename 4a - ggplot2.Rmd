@@ -1,0 +1,87 @@
+---
+title: "Assignment 4a"
+author: "Olaleye Damilare"
+date: "9/17/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE)
+```
+
+### Graphing U.S. States Data
+
+1.  Using the state data in R, create a data frame with the following variables:
+
+-    State – full name of the state
+-    Region – region
+-    Income – 1974 per capita income
+-    Life – life expectancy in years (1969-71)
+-    HS_Grad – percent high school graduates (1970)
+-    Illiteracy – illiteracy (1970, percent of population)
+
+Construct the following graphs using the ggplot2 package.  
+
+**For each graph ...**
+
+- **add a title** 
+-  **explain what you have learned from the graphical display**
+
+```{r}
+library(tidyverse)
+```
+
+
+```{r}
+(us_states <- data.frame(State = state.name, Region = state.region, Income = state.x77[,2], Life = state.x77[,4], HS_Grad = state.x77[,6], Illiteracy = state.x77[,3]))
+```
+
+2.  Construct a graph of the distribution of the per capita income variable. Experiment with two different geoms. (Which one do you prefer and why?)
+
+```{r}
+ggplot(us_states, aes(Income)) + geom_histogram(color = "brown", fill = "orange", bins = 50) + ggtitle("Distribution of per capita income")
+```
+```{r}
+ggplot(us_states, aes(Income)) + geom_density(color = "brown", fill = "orange") + ggtitle("Distribution of per capita income")
+```
+
+I prefer the histogram because it is easier to understand and it also gives a great estimate of the distribution compared to the density graph.
+
+3.  Compare per capita income of different regions graphically two ways. Have one graph use a single panel, and a second graph use different panels. (Again which way do you prefer and why?)
+
+```{r}
+ggplot(us_states) + geom_boxplot(mapping = aes(Region, Income)) + coord_flip() + ggtitle("Per Capita income by Region")
+```
+
+```{r}
+ggplot(us_states) + geom_histogram(mapping = aes(Income), bins = 5) + facet_grid(Region ~ .) + ggtitle("Per Capita income by Region")
+```
+
+I prefer the first boxplot graph because everything is in one graph and it is easier to understand.
+
+
+4.  Construct a scatterplot of Illiteracy and HS_Grad where you indicate region by a different plotting point. Try using different colors and different point shapes.
+
+```{r}
+ggplot(us_states) + geom_point(mapping = aes(HS_Grad, Illiteracy)) + ggtitle("Relation between HS Graduation and Illiteracy")
+
+ggplot(us_states) + geom_point(mapping = aes(HS_Grad, Illiteracy, color = Region)) + ggtitle("Relation between HS Graduation and Illiteracy")
+
+ggplot(us_states) + geom_point(mapping = aes(HS_Grad, Illiteracy, shape = Region)) + ggtitle("Relation between HS Graduation and Illiteracy")
+```
+
+5.  Create a new categorical variable CLife which divides the states into low life expectancy and high life expectancy. Using different panels, compare scatterplots of Illiteracy and HS_Grad for the two life expectancy groups.
+
+```{r}
+us_states$CLife <- ifelse(us_states$Life > mean(us_states$Life), "High", "Low")
+ggplot(us_states) + geom_point(mapping = aes(HS_Grad, Illiteracy, color = Region)) + facet_grid(. ~ CLife) + ggtitle("Life Expectancy in Regions based on Illiteracy and HS Graduation")
+```
+Clearly, in the 70s a majority of the southern states had poor High School graduation rates which might have factored towards low life expectancy as well.
+
+
+6.  Redo the second graph in question 4 where you use state abbreviations as the plotting symbol.
+```{r}
+ggplot(us_states, mapping = aes(HS_Grad, Illiteracy, label = state.abb, color = Region)) + geom_text() + ggtitle("Relation between HS Graduation and Illiteracy in the different States")
+```

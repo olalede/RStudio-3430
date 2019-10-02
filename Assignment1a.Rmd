@@ -1,0 +1,56 @@
+---
+title: 'Assignment 1a: Introduction to Data Science'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1.  What makes Big Data "big"?  What type of complications occur when one works with a massive dataset?
+
+  Big data is massive amounts of data that would be very time intensive if we were to examine every bit of the data. However, big data is meant for patterns and trends. We use big data to find patterns and relationships that makes the data sensible and can help us predict trends.
+
+  With massive datasets, there's the costs of size and processing power meanwhile, with big data, one would have to work with data that are of gigabyte size (or more) and also have the CPU power necessary to process that data.
+
+2.  Give two illustrations of Dataification.
+
+  Music recommendation system in Amazon Music, Spotify, or Apple Music that uses user listening data to generate recommendations.
+
+  Crime prediction system used in certain cities that uses criminal and crime data to predict where and how to respond to threats.
+
+3.  Find two job ads for data scientist.  What type of skills are mentioned in these ads?
+
+Communication skills to communicate the insights/result from the data to other people.
+Be able to build tools or models to analyze data, mine data, clean data, etc. for data science purposes.
+
+4.  In Conway's diagram, why is a particular section of the diagram called a "danger zone"?
+
+  The danger zone section exists as an overlap between Hacking skills and Substantive Expertise for people who are adequately knowledgeable with technology but are not clear about the use of it with data. In other words, the danger zone is a place of uncertainty where consequences could be that Data Science is being used for wrongdoing (bad intentions) or harmful unintended conseqeuence are resulting due to ignorance.
+
+5.  Find an article that describes the use of analytics in professional sports (besides baseball).
+
+  http://www.engineersjournal.ie/2016/08/09/game-changer-statistics-sports-analytics/
+
+  This article mentions the use of an app called Game Changer which can be used to measure post game performance statistics for any sport. The articles talks about performance statistics in soccer where number of kicks, tackles, etc. can be studied for the decision making process.
+
+6.  Suppose someone tells you that Statistical Reasoning is not useful in the world of Big Data since you collect all of the data.  Explain why this statement is not true.
+
+  This statement is not true because without Statistical Reasoning big data would be really difficult to parse through and it would be nearly impossible to infer any implication or insight about the data.
+
+7.  One usually thinks of two types of data -- numerical (like a person's height) and categorical (like eye color).  What other types of data are possible in the world of Big Data?
+
+  Ordinal Data: ordinal data mixes numerical and categorical data for example     (ratings).
+  
+  Norminal Data: are used for labeling variables, without any quantitative value.  
+  
+  Discrete Data: are values or observations that is counted as distinct and separate and can only take particular values. for example (number of stars given for an energy rating)
+  
+  Continous Data for example (height, time).
+  
+8.  Mention some of the challenges working with the Cherry Blossum race data.
+
+  Change of format over time introduces some inconveniences
+
+  Mistakes in the data i.e. missing headers, incorrect values in random columns, etc.
+

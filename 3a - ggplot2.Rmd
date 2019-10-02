@@ -1,0 +1,130 @@
+---
+title: "Assignment 3a"
+author: "Olaleye Damilare"
+date: "9/10/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE)
+```
+
+```{r}
+library(tidyverse)
+```
+
+From the book (Chapter 1) ...
+
+#### Aesthetics
+
+1. What’s gone wrong with this code? Why are the points not blue?
+
+```{r}
+ggplot(data = mpg) +
+geom_point(
+mapping = aes(x = displ, y = hwy, color = "blue")
+)
+```
+
+Answer: The points are not blue because color would have to be put outside of aethetics. When color is put inside mapping, the value for it must be a variable. For instance, color = year would show the relationship of year with hwy and displ.
+```{r}
+ggplot(data = mpg) +
+geom_point(color = "blue", mapping = aes(x = displ, y = hwy, color = "blue"))
+
+```
+
+
+2. Which variables in mpg are categorical? Which variables are
+continuous? (Hint: type ?mpg to read the documentation for the
+dataset.) How can you see this information when you run mpg?
+
+Answer: Categorical variables : model , trans , drv, fl , class
+        Continuous variables  : displ, cty, hwy, cyl, year
+
+
+3. Map a continuous variable to color, size, and shape. How do
+these aesthetics behave differently for categorical versus continuous
+variables?
+
+```{r}
+library(ggplot2)
+ggplot(data = mpg) +
+geom_point(mapping = aes(x = displ, y = hwy, color = year, size = drv, shape = trans))
+```
+Continuous variables cannot be assigned to shape. 
+Categorical variables can be and R uses different shapes/colors/sizes for the different categories
+
+4. What happens if you map the same variable to multiple aesthetics?
+
+```{r}
+ggplot(data = mpg) +
+geom_point(mapping = aes(x = displ, y = hwy, color = drv, size = drv, shape = drv))
+```
+When the same variable is assigned to multiple aesthetics, R displays all the characteristics of the aesthetics with respect to the variable.
+
+
+5. What does the stroke aesthetic do? What shapes does it work
+with? (Hint: use ?geom_point.)
+
+Answer: Stroke adds an outline to the points or dots in the geom_point and geom_count. 
+        The value of stroke determines the thickness of the outline.
+
+#### Facets
+
+1. What happens if you facet on a continuous variable?
+
+Answer: A continous variable creates multiple facets for all the unique values.
+
+```{r}
+ggplot(data = mpg) + geom_point(mapping = aes(x = displ, y = hwy)) + facet_grid(. ~ cty)
+```
+A continous variable creates multiple facets for all the unique values.
+
+
+2. What do the empty cells in a plot with facet_grid(drv ~ cyl)
+mean? How do they relate to this plot?
+
+```{r}
+ggplot(data = mpg) +
+   geom_point(mapping = aes(x = drv, y = cyl))
+```
+Answer: It means that the empty cells are present as there is no value that represents the relationship between drv and cyl.
+
+3. What plots does the following code make? What does . do?
+
+```{r}
+ggplot(data = mpg) +
+geom_point(mapping = aes(x = displ, y = hwy)) +
+facet_grid(drv ~ .)
+```
+Answer: 
+```{r}
+
+ggplot(data = mpg) +
+geom_point(mapping = aes(x = displ, y = hwy)) +
+facet_grid(. ~ cyl)
+
+```
+
+
+```{r}
+ggplot(data = mpg) +
+geom_point(mapping = aes(x = displ, y = hwy)) +
+facet_grid(. ~ cyl)
+```
+
+4. Take the first faceted plot in this section:
+
+```{r}
+ggplot(data = mpg) +
+geom_point(mapping = aes(x = displ, y = hwy)) +
+facet_wrap(~ class, nrow = 2)
+```
+
+What are the advantages to using faceting instead of the color
+aesthetic? What are the disadvantages? How might the balance
+change if you had a larger dataset?
+
+Answer: It is difficult to resolve more than a dozen or so discrete colours, but we can have a larger number of facets than that. On the other hand, facets can be harder to read at a glance, or if the cells being compared aren't lined up in the required dimension. So in a situation like this, colours are probably better, but if we had more classes, or wanted to use colour for a different variable, facets would come into their own.

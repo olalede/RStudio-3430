@@ -1,0 +1,107 @@
+---
+title: "Assignment 6a"
+author: "Damilare Olaleye"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+The Lahman database is a collection of season-to-season statistics for all baseball players in MLB history.  It is available in the ```Lahman``` package.  Before you start this assignment install the ```Lahman``` package.
+
+To start, load in the ```Lahman``` and ```tidyverse           ``` packages.
+
+```{r}
+library("tidyverse")
+library("Lahman")
+```
+
+#### Creating two top-ten lists.
+
+#### Top-ten batting averages.
+
+**Choose a year when one of your parents was born -- what year did you choose?**
+1977
+
+**Use filter to choose batting data for the season you chose.**
+
+```{r}
+battingData <- data.frame(Batting)
+battingData <- filter(battingData, yearID == "1977")
+```
+
+**Grouping data by playerID, find the total number of AB and H for each player.**
+
+```{r}
+battingData <- battingData %>% group_by(playerID) %>% summarise(AB = sum(AB),H = sum(H))
+```
+
+**Use mutate to compute the batting average, rounding to 3 decimal places.**
+
+```{r}
+totalAB_H <- battingData %>% mutate(battingAvg = round(H / AB, 3))
+```
+
+**Use filter to limit list to qualifying players with 400 AB.**
+
+```{r}
+bat400 <- totalAB_H %>% filter(AB > 400)
+```
+
+**Arrange by decreasing batting average.**
+
+```{r}
+bat400 <- bat400 %>% arrange(desc(battingAvg))
+```
+
+**Use slice to only show top 10 players.**
+
+```{r}
+slice(bat400, 1:10)
+```
+
+**By use of the inner_join function, merge your data with the first and last names of the players found in the Master data frame.**
+
+```{r}
+batt_10 <- Master %>% select(playerID, nameFirst, nameLast) %>% inner_join(bat400, Master, by = "playerID")
+```
+
+
+**Display your list to compare with the list on Baseball-Reference.**
+
+```{r}
+batt_10 <- batt_10 %>% arrange(desc(battingAvg)) %>% select(nameFirst, nameLast, BA = battingAvg)
+slice(batt_10, 1:10)
+```
+
+#### Top 10 WHIP Values
+
+WHIP stands for the mean number of walks and hits allowed per inning for a pitcher.  In the Pitching data frame, BB is the number of walks, H is the number of hits, and IPouts is the number of outs.  Then WHIP is defined by
+
+$$
+WHIP = \frac{BB + H}{IPouts / 3}
+$$
+
+For example, in 2016, Clayton Kershaw allowed 97 Hits and 11 Walks and generated 447 outs and his WHIP was 
+
+$$
+WHIP = \frac{11 + 97}{447/3} = 0.725
+$$
+
+**Find and display the top 10 WHIP pitchers for your season** (qualifying pitchers are the ones where IPouts >= 486).
+```{r}
+WHIP_data <- data.frame(Pitching)
+WHIP_data <- WHIP_data %>% filter(yearID == 1977)
+WHIP_data <- WHIP_data %>% group_by(playerID) %>% 
+                           summarise(BB = sum(BB), H = sum(H), IPouts = sum(IPouts))
+WHIP_top <- WHIP_data %>% mutate(WHIP = round((BB + H)/(IPouts/3), 3)) %>% 
+                          filter(IPouts >= 486)
+WHIP_top <- Master %>%
+            select(playerID, nameFirst, nameLast) %>% 
+            inner_join(WHIP_top, Master, by = "playerID") %>% 
+            select(nameFirst, nameLast, WHIP)
+WHIP_top <- WHIP_top %>% arrange(WHIP)
+slice(WHIP_top, 1:10)
+```
+

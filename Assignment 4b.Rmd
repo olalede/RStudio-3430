@@ -1,0 +1,88 @@
+---
+title: "Assignment 4b"
+output: html_document
+author: "Olaleye Damilare"
+date: "9/20/2019"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Load in the readr and ggplot2 packages.
+
+```{r}
+library(readr)
+library(ggplot2)
+library(dplyr)
+```
+
+
+
+```{r}
+earthquakes <- read_csv("earthquakes.csv")
+```
+
+
+1.) Create a new data frame of only the earthquakes below the equator.
+
+```{r}
+below.earthquake <- earthquakes %>% filter(location.latitude < 0)
+below.earthquake
+```
+
+2.) Create a new data frame of only the earthquakes above the equator.
+
+```{r}
+above.earthquake <- earthquakes %>% filter( location.latitude > 0)
+above.earthquake
+```
+
+3.) Use the arrange verb to find the most severe earthquake
+
+```{r}
+most.severe <- earthquakes %>% arrange(desc(impact.magnitude))
+head(most.severe,1)
+```
+
+4.) Are there more earthquakes above or below the equator?
+```{r}
+above <- count(above.earthquake)
+above
+```
+```{r}
+below <- count(below.earthquake)
+below
+```
+```{r}
+count <- ifelse (above > below, "There are more Earthquakes above", "More Earthquakes below")
+count
+```
+
+5.) Find all of the earthquakes in June – where was the most severe one.
+
+```{r}
+earthquakes %>% filter( time.month == 6 )
+```
+There are no earthquakes in June
+
+
+
+6.) Find all of the earthquakes in December 
+```{r}
+decdata <- earthquakes %>% filter( time.month == 12 )
+decdata
+```
+There are no earthquakes in December 
+
+6b.) – where was the most severe one.
+```{r}
+severe<-decdata %>% arrange(desc(impact.magnitude))
+head(severe,1)
+```
+7.) (Extra credit) How many earthquakes listed are in Ohio?
+```{r}
+location <- earthquakes %>% filter( location.name == "Ohio" )
+location
+```
+

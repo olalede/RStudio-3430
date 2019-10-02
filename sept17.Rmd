@@ -1,0 +1,73 @@
+---
+title: "classSpt17"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(readr)
+library(ggplot2)
+```
+
+```{r}
+opiod <- read_cvs("graduates.py")
+```
+
+
+Lets focus on a particular major and see how the number of graduates with taht major has changed over years.
+
+Which major do you want to look at? (class response) -> Computer Science
+It appears that is coded as "Computer Science and Math."
+
+Create a new dataset cs:
+
+```{r}
+
+cs <- grad[grad$Education.Major == "Computer Science and Math", ]
+```
+
+Graph the number of majors over time. 
+
+```{r}
+ggplot(cs, aes(Year, Demographics.Total)) + geom_point()
+```
+
+I see ...
+
+-Number of cs majors seem to be increasing over time. 
+-More rapid incerease in the number of cs majors in later years.
+-What is going on in 2002,2006, and 2008?
+
+MIght be intresting to look at other majors to see if there is a smiar pattern of weird data. 
+
+Can we see how the gender distribution of cs majors has changed over years?
+
+Compute a new variable   which gives the fraction of femlae majors.
+
+```{r}
+cs$Fraction_Females <= cs$Demographics.Gender.Females /cs$Demographics.Gender.Females + cs$Demographics.Gender.Males)
+
+```
+
+Graph these fractions against year.
+```{r}
+ggplot(cs, aes(Year, Fraction_females)) + geom_point()
+```
+
+Are there any categorical variables of interest?
+
+Look at the median salaray of all these majors for a spceific year.
+
+```{r}
+d2015 <- grad[grad$Year == 2015,]
+```
+
+Graph the median salaries.
+```{r}
+ggplot(d2015, aes(Education.Major, salaries.Median)) + geom_point() + coord_flip()
+```
+
+

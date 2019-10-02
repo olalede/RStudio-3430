@@ -1,0 +1,116 @@
+---
+title: "Assignment 5b"
+author: "Damilare Olaleye"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#### Data Manipulation with dplyr - Part 2
+
+We'll continue to work with the ```flights``` dataset on all 336,776 flights departing from New York in 2014
+
+**Replace the author "Student Name" with your name** (Some of you didn't do this in the last assignment.)
+
+**Load the tidyverse and ```nycflights13``` packages.** (To help you, I'd done this for you.)
+
+```{r}
+## load the nycflights13 package
+library(nycflights13)
+library(tidyverse)
+```
+
+Missing values -- NA represents a missing value on R.
+
+I've created a small data frame of heights and weights below where the last value of heights is missing.
+
+```{r}
+df <- data.frame(Height = c(60, 62, 70, 75, NA),
+                 Weight = c(130, 110, 170, 165, 200))
+```
+
+**Use the mutate function from the dplyr package to compute the body mass index (BMI) for these five people -- I'll get you started. (You have to figure out the formula for body mass index.)**
+
+```{r}
+df <- mutate(df,
+             BMI = (Weight / (Height)^2)*703)
+```
+
+**What is the BMI value for the last person?  Are you surprised?**
+The function ```is.na``` is used to identify missing values.
+
+NA.
+I'm surprised that R did not report any error/warning about the NA value and implicitly put NA in BMI.
+
+
+**Use is.na to identify the missing Height value in your data frame.**
+
+```{r}
+(is.na(df))
+```
+
+**Using the filter command, create a new data frame df1 which removes this missing observation.**
+
+```{r}
+df1 <- filter(df, Height != "NA")
+```
+Back to the flights data frame
+
+**Use the filter function to select all flights from Delta on May 18. Save this data frame to the variable delta.**
+
+```{r}
+delta <- filter(flights, carrier == "DL", month == 5, day == 18 )
+```
+
+**Use the select function to select the variables dep_time, arr_time, dep_delay, arr_delay, and dest for these Delta flights -- save in data frame delta1.**
+
+```{r}
+delta1 <- select(delta, dep_time, arr_time, dep_delay, arr_delay, dest)
+```
+
+**Use the arrange function to arrange the fights in delta1 from latest arrival to earliest arrival -- save in delta1.**
+
+```{r}
+delta1 <- arrange(delta1, desc(arr_time))
+```
+
+**Use the head function to display the five latest arrivals.**
+
+```{r}
+head(delta1, 5)
+```
+
+**Use the mutate function to define a new variable  "Time"" which is "before noon" or "after noon" if the departure time is before 1200 or after 1200 -- save the data frame to delta1.**
+
+```{r}
+delta1 <- mutate(delta1, Time = ifelse(dep_time > 1200, "after noon", "before noon"))
+```
+##Use the summarize function to find the mean arrival delay for all Delta flights.##
+
+```{r}
+summarize(filter(flights, carrier == "DL"), mean(arr_delay, na.rm = TRUE))
+```
+
+##Use the summarize function to find the number of flights before and after noon.##
+
+```{r}
+delta1 %>% group_by(Time) %>% summarize(N = n())
+```
+
+##Use the summarize function to find the mean arrival delay for flights before and after noon.##
+
+```{r}
+delta1 %>% group_by(Time) %>% summarize(mean(arr_delay, na.rm = T))
+```
+
+##Extra Credit##
+
+For all flights, find the number of flights for each day of the week (Sunday, Monday, etc).  Also find the mean arrival delay for each day of the week.  Construct "good" graphs of your results.
+
+```{r}
+##flights %>% select(year, month, day)%>% mutate(dayOfweek = weekdays(make_date(year = year, month = month, day = day)))
+```
+
+

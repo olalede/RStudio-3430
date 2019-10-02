@@ -1,0 +1,123 @@
+---
+title: "Assignment 2a"
+author: "Damilare Olaleye"
+date: "August 29, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1. Create a vector “ages”" containing the age (at inauguration) of the ten most recent Presidents. Using the names function add last names to the values of this vector.
+
+```{r}
+ages <- c(70, 47, 54, 46, 64, 69, 52, 61, 56, 55)
+names(ages) <- c("Trump", "Obama", "Bush", "Clinton", "Bush", "Reagan", "Carter", "Ford", "Nixon", "Johnson")
+
+ages
+```
+
+2. Create another vector “year”" containing the year at inauguration of these ten Presidents.
+```{r}
+year <- c(2017, 2009, 2001, 1993, 1989, 1981, 1977, 1974, 1969, 1963)
+year
+```
+
+3. Find the mean, min, and maximum age of these 10 Presidents.
+```{r}
+mean_age <- mean(ages)
+min_age <- min(ages)
+max_age <- max(ages)
+
+mean_age
+min_age
+max_age
+```
+
+4. Convert these ages to months using a vector operation – call the new vector “ages.months”.
+```{r}
+ages.months <- 12*ages
+ages.months
+```
+
+5. Using logical operations, create a new vector “age.young” with the ages of the Presidents younger than 50.
+```{r}
+age.young <- ages < 50
+age.young
+```
+
+6. Create a vector of the ages of the Presidents inaugurated after 1975.
+```{r}
+age_inaug_75 <- ages [year > 1975]
+age_inaug_75
+```
+
+7. Plot the inauguration year against the age for these 10 Presidents. Do you see any pattern in this graph?
+```{r}
+table(year, ages)
+plot(year)
+```
+
+
+8. Collect the writing hand (“L” or “R”) for all students in this class. Also collect the gender (“M” or “W”) for all students. Put the values in two character vectors “hand” and “gender”.
+```{r}
+gender <- c("M","M","F","F","M","M","F","M","F","F","M","M","F","F","M","M","F","M","M","M","F","M","M","M","F","M")
+hand <- c("R","R","L","L","R","R","R","R","R","R","R","R","F","F","M","M","F","M","M","M","F","M","M","M","F","M")
+```
+
+9. Construct and display a frequency table of writing hand.
+```{r}
+table(hand,gender)
+
+```
+
+10. Construct a graph of these writing hand frequencies.
+```{r}
+barplot(c(0,9))
+barplot(c(3,7))
+
+```
+
+11. Using logical operations, create a vector of the writing hand of the women and another vector of the writing hand the men.
+```{r}
+women <- gender == "F"
+women
+men <- gender == "M"
+men
+```
+
+12. Find the high temperatures (in degrees Fahrenheit) of six cities (of your choice) – put these values in the vector “temp.F”.
+
+```{r}
+temp.F <- c(89, 64, 60, 69, 77, 80)
+```
+
+13. By performing a suitable operation, convert these temperatures to degrees Centigrade – put these in the vector “temp.C”.
+```{r}
+temp.C <- (temp.F - 32)*(5/9)
+temp.C
+```
+
+14. Round your calculations of temperatures Centigrade to the nearest tenth of a degree.
+```{r}
+round(temp.C, 1)
+```
+
+15. Use vector operations, find the sum of (1 + x) ^ 2 as x takes on the integer values from 0 to 6.
+```{r}
+x = c(0,1,2,3,4,5,6)
+sum((1+x)^2)
+```
+
+16. One can represent the constant e^2  as the infinite series
+
+1 + 2 + 2 ^ 2 / 2! + 2 ^ 3 / 3! + …
+
+Use R to confirm this result.
+
+```{r}
+x <- 0:1000
+sum(1/2 ^ x)
+```
+
