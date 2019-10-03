@@ -30,12 +30,29 @@ library("tidyverse")
 ```{r}
 birthMonths <- data.frame(Master)
 birthMonths <- birthMonths %>% select(birthMonth) %>% group_by(birthMonth) %>% summarise(n = sum(birthMonth)) %>% na.omit()
-
 ggplot(birthMonths, aes(x = birthMonth, y = n, origin = 0)) + geom_col()
 ```
 
 
 **Question about Birth Days:** Similarly, I have heard that the week day that baseball players are born is not uniform over the seven days Sunday, Monday, ..., Saturday.  Can you illustrate this fact graphically?  Is the pattern the same for modern ballplayers and not-modern ballplayers?  Why do you think we see that pattern?
 
+```{r}
+library(lubridate)
+Weekdays <- Master %>% select(birthDate)
+Weekdays <- Weekdays %>% mutate(Day = as.character(wday(birthDate, label = T, abbr = F)))
+Frequency_Table <- data.frame(Weekdays %>% group_by(Day) %>% summarize(N = n()))
+na.omit(Frequency_Table)
+ggplot(Frequency_Table, aes(x = Day, y = N)) + geom_col()
+```
+
 **Question about Tenure of Baseball Players**  Most players would like to stay in Major League Baseball for many seasons, but unfortunately most players have short tenures.  For a modern player, explore the number of years that they are in the Major Leagues.  How do the tenures vary between modern players and not-modern players?
+
+```{r}
+Master %>% filter(birthYear < 1950) %>% mutate(End = as.integer(substr(finalGame, 1, 4)), Start = as.integer(substr(debut, 1, 4)), Tenure = End - Start + 1) %>% group_by(Tenure) %>% summarize(N = n()) %>% mutate(Era = "Early" ) -> Early
+Master %>% filter(birthYear >= 1950) %>% mutate(End = as.integer(substr(finalGame, 1, 4)), Start = as.integer(substr(debut, 1, 4)), Tenure = End - Start + 1) %>% group_by(Tenure) %>% summarise(N = n()) %>% mutate(Era = "Modern" ) -> Modern
+
+Tenure_Table <- full_join(Early, Modern)
+ggplot(Tenure_Table, aes(Tenure,N , color = Era)) + geom_point() + geom_smooth(se = F)
+
+```
 
