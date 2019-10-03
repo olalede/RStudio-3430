@@ -1,0 +1,41 @@
+---
+title: "Assignment 6b"
+author: "Damilare Olaleye"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#### Exploring the Master table in the Lahman database.
+
+This purpose of this activity is to give you some pratice in exploring data using the dplyr and ggplot2 packages.
+
+Exploring data consists of 
+
+-- thinking of an interesting question
+-- constructing appropriate graphs and summaries to help answer the question
+-- write a summary describing what you learned and suggesting improvements or other relevant questions
+
+Here I will present some questions and your job is to construct graphs and description to answer each question.
+
+
+```{r}
+library("Lahman")
+library("tidyverse")
+```
+
+**Question about Birth Months:**  I've heard that modern baseball players tend not to be born uniformly over the 12 months.  Is this true?  If so, what is the pattern?  Is this just true for modern players?  Why do you think this is true?
+```{r}
+birthMonths <- data.frame(Master)
+birthMonths <- birthMonths %>% select(birthMonth) %>% group_by(birthMonth) %>% summarise(n = sum(birthMonth)) %>% na.omit()
+
+ggplot(birthMonths, aes(x = birthMonth, y = n, origin = 0)) + geom_col()
+```
+
+
+**Question about Birth Days:** Similarly, I have heard that the week day that baseball players are born is not uniform over the seven days Sunday, Monday, ..., Saturday.  Can you illustrate this fact graphically?  Is the pattern the same for modern ballplayers and not-modern ballplayers?  Why do you think we see that pattern?
+
+**Question about Tenure of Baseball Players**  Most players would like to stay in Major League Baseball for many seasons, but unfortunately most players have short tenures.  For a modern player, explore the number of years that they are in the Major Leagues.  How do the tenures vary between modern players and not-modern players?
+
