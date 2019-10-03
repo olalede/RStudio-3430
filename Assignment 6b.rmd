@@ -33,6 +33,8 @@ birthMonths <- birthMonths %>% select(birthMonth) %>% group_by(birthMonth) %>% s
 ggplot(birthMonths, aes(x = birthMonth, y = n, origin = 0)) + geom_col()
 ```
 
+Yes it is true that modern baseball players are not born unformily over 12 months as shown in the graph above. 
+
 
 **Question about Birth Days:** Similarly, I have heard that the week day that baseball players are born is not uniform over the seven days Sunday, Monday, ..., Saturday.  Can you illustrate this fact graphically?  Is the pattern the same for modern ballplayers and not-modern ballplayers?  Why do you think we see that pattern?
 
