@@ -30,6 +30,7 @@ library("tidyverse")
 ```{r}
 birthMonths <- data.frame(Master)
 birthMonths <- birthMonths %>% select(birthMonth) %>% group_by(birthMonth) %>% summarise(n = sum(birthMonth)) %>% na.omit()
+
 ggplot(birthMonths, aes(x = birthMonth, y = n, origin = 0)) + geom_col()
 ```
 
@@ -46,7 +47,7 @@ Frequency_Table <- data.frame(Weekdays %>% group_by(Day) %>% summarize(N = n()))
 na.omit(Frequency_Table)
 ggplot(Frequency_Table, aes(x = Day, y = N)) + geom_col()
 ```
-
+The pattern for 
 **Question about Tenure of Baseball Players**  Most players would like to stay in Major League Baseball for many seasons, but unfortunately most players have short tenures.  For a modern player, explore the number of years that they are in the Major Leagues.  How do the tenures vary between modern players and not-modern players?
 
 ```{r}
