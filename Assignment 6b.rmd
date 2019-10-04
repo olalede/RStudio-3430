@@ -47,7 +47,8 @@ Frequency_Table <- data.frame(Weekdays %>% group_by(Day) %>% summarize(N = n()))
 na.omit(Frequency_Table)
 ggplot(Frequency_Table, aes(x = Day, y = N)) + geom_col()
 ```
-The pattern for 
+Some patatern are the same. Monday, Tuesday, and Friday paterns are all the same. 
+
 **Question about Tenure of Baseball Players**  Most players would like to stay in Major League Baseball for many seasons, but unfortunately most players have short tenures.  For a modern player, explore the number of years that they are in the Major Leagues.  How do the tenures vary between modern players and not-modern players?
 
 ```{r}
@@ -58,4 +59,4 @@ Tenure_Table <- full_join(Early, Modern)
 ggplot(Tenure_Table, aes(Tenure,N , color = Era)) + geom_point() + geom_smooth(se = F)
 
 ```
-
+For modern players the tenure slowly decline as shown in the graph above, and for non modern players the tenure declined rapidly. 
