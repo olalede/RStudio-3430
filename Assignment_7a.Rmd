@@ -1,0 +1,85 @@
+---
+title: "Babynames"
+author: "Damilare Olaleye"
+date: "10/8/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE)
+```
+
+The R package babynames contains a listing of the frequencies of all baby names (male or female) recorded by the Social Security Adminstration for the years 1880 through 2014.
+
+The data frame babynames has five variables: 
+
+- year
+- sex
+- name
+- n 
+- prop (n divided by the total number of applicants in that year).
+
+To get started, download this package from CRAN using the install.packages command. Load the package in the Markdown document using the library function.
+
+1.   First check out the popularity of your given first name.  
+
+- Create a new data frame consisting only the year and prop variables for your name (use the select and filter functions from the dplyr package).
+
+- Use a scatterplot to plot the year against prop for your name
+    
+- Summarize what you learn from the graph.
+
+```{r}
+#install.packages("babynames")
+library(babynames)
+library(tidyverse)
+#Assuming name Aaron
+babynames %>% filter(name == "Aaron", sex == "M") %>% select(year, prop) -> bName
+ggplot(bName, aes(year, prop)) + geom_point() + ggtitle("Popularity of the name Aaron throughout history")
+```
+It can be inferred from the graph that the name Aaron was relatively uncommon before 1960. However, after the 60s it was sparsely somewhat popular in some of the years.
+
+
+2.  Repeat number 1 for your mother's first name and your father's first name.  Summarize what you have learned about the popularity of your mother's and your father's name over time.
+
+#Assume Chester, Emma
+```{r}
+filter(babynames, name == "Chester", sex == "M") %>% select(name, year, prop ) -> papName
+filter(babynames, name == "Emma", sex == "F") %>% select(name, year, prop ) -> mumName
+
+ggplot() + geom_point(data = mumName, aes(year,prop)) + ggtitle("Popularity of the name Emma throughout history")
+ggplot() + geom_point(data = papName, aes(year,prop)) + ggtitle("Popularity of the name Chester throughout history")
+```
+
+The name Emma was very popular (with more than 2% proportion around the 1880s) before 1950 with somewhat of a decline between 1960 and 1995. Around 2000 and afterwards it became fairly popular back again. Similar pattern is witnessed with the name Chester excpet that the name Chester is most popular at .3% and has been on the decline since the 1950s stabilizing towards its lowest through the 2000s.
+
+3.  For your birthyear, create two tables -- one showing the 10 most popular boy names, and second table showing the 10 most popular girl names for your birthyear.
+
+```{r}
+bYear <- babynames %>% filter(year == 1996, sex == "M") %>% select(name, prop) %>% arrange(sort(prop, decreasing = F))
+gYear <- babynames %>% filter(year == 1996, sex == "F") %>% select(name, prop) %>% arrange(sort(prop))
+slice(bYear, 1:10)
+slice(gYear, 1:10)
+```
+
+
+4.  Use the mutate function to create a new variable firstletter that is the first letter of the name.  If you are female, find the most popular first letter for  girl names in 1960 and the most popular first letter for girl names in 2000.  (If you are male, do the same thing for boy names.)
+
+```{r}
+babynames %>% filter(year == 1960, sex == "M") %>% mutate(firstLetter = substr(name, 1, 1)) %>% select(firstLetter, n) %>% group_by(firstLetter) %>% summarise(total = sum(n)) %>% arrange(desc(total)) -> firstLetter1960
+babynames %>% filter(year == 2000, sex == "M") %>% mutate(firstLetter = substr(name, 1, 1)) %>% select(firstLetter, n) %>% group_by(firstLetter) %>% summarise(total = sum(n)) %>% arrange(desc(total)) -> firstLetter2000
+```
+
+5.  Use a graph to compare the popularity of the two first letters who found in  part 4 over time.  Explain what you have learned about the relative popularity of these two first letters.
+```{r}
+slice(firstLetter1960, 1:10)
+slice(firstLetter2000, 1:10)
+# Using R as the other popular first letter since J is the most popular first letter in both cases
+babynames %>% mutate(firstLetter = substr(name, 1, 1)) %>% filter(firstLetter == "R" | firstLetter == "J", sex == "M") %>%  group_by(year, firstLetter) %>% summarise(frequency = sum(n)) -> popFirstLetter
+
+ggplot(popFirstLetter) + geom_point(mapping = aes(year, frequency, color = firstLetter)) + ggtitle("Popularity of names starting with J & R throughout history")
+```
+Both the letters J and R followed a borderline identical trend since the 1880s up until 1960 where both the first letter names started to somewhat diverge. Babynames starting with J begins to stabilize/oscillate around 350000 after 60s. However, Babynames starting with R started to decline after the 60s to around 8000 post 2000.
+
