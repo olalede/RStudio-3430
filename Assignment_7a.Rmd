@@ -39,8 +39,7 @@ library(tidyverse)
 babynames %>% filter(name == "Aaron", sex == "M") %>% select(year, prop) -> bName
 ggplot(bName, aes(year, prop)) + geom_point() + ggtitle("Popularity of the name Aaron throughout history")
 ```
-It can be inferred from the graph that the name Aaron was relatively uncommon before 1960. However, after the 60s it was sparsely somewhat popular in some of the years.
-
+As shown from the graph that the name Aaron was relatively uncommon before 1960. However, after the 60s it was sparsely somewhat popular in some of the years.
 
 2.  Repeat number 1 for your mother's first name and your father's first name.  Summarize what you have learned about the popularity of your mother's and your father's name over time.
 
@@ -70,6 +69,9 @@ slice(gYear, 1:10)
 ```{r}
 babynames %>% filter(year == 1960, sex == "M") %>% mutate(firstLetter = substr(name, 1, 1)) %>% select(firstLetter, n) %>% group_by(firstLetter) %>% summarise(total = sum(n)) %>% arrange(desc(total)) -> firstLetter1960
 babynames %>% filter(year == 2000, sex == "M") %>% mutate(firstLetter = substr(name, 1, 1)) %>% select(firstLetter, n) %>% group_by(firstLetter) %>% summarise(total = sum(n)) %>% arrange(desc(total)) -> firstLetter2000
+
+firstLetter1960
+firstLetter2000
 ```
 
 5.  Use a graph to compare the popularity of the two first letters who found in  part 4 over time.  Explain what you have learned about the relative popularity of these two first letters.
