@@ -57,8 +57,8 @@ The name Emma was very popular (with more than 2% proportion around the 1880s) b
 3.  For your birthyear, create two tables -- one showing the 10 most popular boy names, and second table showing the 10 most popular girl names for your birthyear.
 
 ```{r}
-bYear <- babynames %>% filter(year == 1996, sex == "M") %>% select(name, prop) %>% arrange(sort(prop, decreasing = F))
-gYear <- babynames %>% filter(year == 1996, sex == "F") %>% select(name, prop) %>% arrange(sort(prop))
+bYear <- babynames %>% filter(year == 1996, sex == "M") %>% select(name, n) %>% arrange(sort(n, decreasing = F))
+gYear <- babynames %>% filter(year == 1996, sex == "F") %>% select(name, n) %>% arrange(sort(n))
 slice(bYear, 1:10)
 slice(gYear, 1:10)
 ```
@@ -70,16 +70,17 @@ slice(gYear, 1:10)
 babynames %>% filter(year == 1960, sex == "M") %>% mutate(firstLetter = substr(name, 1, 1)) %>% select(firstLetter, n) %>% group_by(firstLetter) %>% summarise(total = sum(n)) %>% arrange(desc(total)) -> firstLetter1960
 babynames %>% filter(year == 2000, sex == "M") %>% mutate(firstLetter = substr(name, 1, 1)) %>% select(firstLetter, n) %>% group_by(firstLetter) %>% summarise(total = sum(n)) %>% arrange(desc(total)) -> firstLetter2000
 
-firstLetter1960
-firstLetter2000
+slice(firstLetter1960, 1:10)
+slice(firstLetter2000, 1:10)
 ```
 
 5.  Use a graph to compare the popularity of the two first letters who found in  part 4 over time.  Explain what you have learned about the relative popularity of these two first letters.
 ```{r}
+
 slice(firstLetter1960, 1:10)
 slice(firstLetter2000, 1:10)
 # Using R as the other popular first letter since J is the most popular first letter in both cases
-babynames %>% mutate(firstLetter = substr(name, 1, 1)) %>% filter(firstLetter == "R" | firstLetter == "J", sex == "M") %>%  group_by(year, firstLetter) %>% summarise(frequency = sum(n)) -> popFirstLetter
+babynames %>% mutate(firstLetter = substr(name, 1, 1)) %>% filter(firstLetter == "R" | firstLetter == "J", sex == "M") %>%  group_by(year, firstLetter) %>% summarise(frequency = sum(prop)) -> popFirstLetter
 
 ggplot(popFirstLetter) + geom_point(mapping = aes(year, frequency, color = firstLetter)) + ggtitle("Popularity of names starting with J & R throughout history")
 ```
