@@ -1,0 +1,56 @@
+State,Region,Unemployment rate (%),Livability Index
+Alabama,South,4.1,21 
+Alaska,West,6.7,24.98 
+Arizona,West,4.6,22.11 
+Arkansas,South,3.6,19.25 
+California,West,4.2,22.27 
+Colorado,West,2.9,28 
+Connecticut,Northeast,4.3,29.68 
+Delaware,South,3.9,27.66 
+Florida,South,3.7,21.82 
+Georgia,South,3.8,21.77 
+Hawaii,West,2.1,25.02 
+Idaho,West,2.8,27.32 
+Illinois,Midwest,4.1,23.91
+Indiana,Midwest,3.5,26.11 
+Iowa,Midwest,2.5,31.41 
+Kansas,Midwest,3.3,26.8 
+Kentucky,South,4.4,20.48 
+Louisiana,South,5,17.25 
+Maine,Northeast,3.2,29.36 
+Maryland,South,4.2,30.25 
+Massachusetts,Northeast,3.6,30.8 
+Michigan,Midwest,4.1,24.47 
+Minnesota,Midwest,2.9,33.86 
+Mississippi,South,4.8,16.11
+Missouri,Midwest,3.3,25.82 
+Montana,West,3.6,25.5 
+Nebraska,Midwest,2.8,30.52 
+Nevada,West,4.5,24.41 
+New Hampshire,Northeast,2.7,35.45 
+New Jersey,Northeast,4.2,30.77 
+New Mexico,West,4.6,20.43 
+New York,Northeast,4.2,24.09 
+North Carolina,South,3.9,20.61 
+North Dakota,Midwest,2.6,30.43 
+Ohio,Midwest,4.6,23.86
+Oklahoma,South,3.7,20.37 
+Oregon,West,3.8,22.73 
+Pennsylvania,Northeast,4.1,23.86 
+Rhode Island,Northeast,4,25.77 
+South Carolina,South,3.4,20.34 
+South Dakota,Midwest,3,30.73 
+Tennessee,South,3.6,19.5 
+Texas,South,3.9,19.93 
+Utah,West,3.1,27.14 
+Vermont,Northeast,2.8,31.73 
+Virginia,South,3,31.57 
+Washington,West,4.5,25.07 
+West Virginia,South,5.3,19.64 
+Wisconsin,Midwest,3,29.75 
+Wyoming,West,3.9,31.61 
+
+This dataset is comprised of the unemployment rate and livability index of all the 50 states. The Unemployment rate and the livabilty index can be somewhat related as it is observed that lower the unemployment rate higher the livability index. 
+Sources:
+	Unemployment Rate : https://www.bls.gov/web/laus/laumstrk.htm
+	Livability Index  : http://www.statemaster.com/graph/lif_bes_sta_to_liv-lifestyle-best-states-to-live
