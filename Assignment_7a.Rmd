@@ -84,5 +84,5 @@ babynames %>% mutate(firstLetter = substr(name, 1, 1)) %>% filter(firstLetter ==
 
 ggplot(popFirstLetter) + geom_point(mapping = aes(year, frequency, color = firstLetter)) + ggtitle("Popularity of names starting with J & R throughout history")
 ```
-Both the letters J and R followed a borderline identical trend since the 1880s up until 1960 where both the first letter names started to somewhat diverge. Babynames starting with J begins to stabilize/oscillate around 350000 after 60s. However, Babynames starting with R started to decline after the 60s to around 8000 post 2000.
+The frequence of J was above R in from 1880 to 2000, J sharply declined after 1960. Babynames starting with J begins to stabilize/oscillate around 350000 after 60s. However, Babynames starting with R started to decline after the 60s to around 8000 post 2000.
 
