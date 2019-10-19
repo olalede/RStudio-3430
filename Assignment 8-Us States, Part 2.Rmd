@@ -1,0 +1,113 @@
+---
+title: "US States Part 2 Dataset"
+author: "Olaleye Damilare"
+date: "15/10/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+Each of you will be assigned a specific dataset to read (see the Personal Websites page) — read this data into R.
+
+
+1.  Give the source of your data and describe the variables collected.
+
+## R Markdown
+```{r}
+library(tidyverse)
+library(dslabs)
+library(ggpubr)
+library(naniar)
+
+us_states <- read_csv("http://personal.bgsu.edu/~jhaussl/us_states.csv", n_max = 50)
+names(us_states)[1:4] <- c("State","Region","Homicide_Rate","Police_Amount")
+```
+
+2.  If possible, find the four errors in the dataset.  Replace any weird value to missing (NA) and make sure each of the two variables are numeric.
+
+```{r}
+boxplot(us_states$Homicide_Rate)
+us_states %>% filter(Homicide_Rate > 12 | Homicide_Rate < 0) 
+us_states[which(us_states$State == "Kansas" | us_states$State == "Nevada"), 3] <- rep(NA, 2)
+
+```
+
+
+3.  For your corrected dataset …
+
+
+a.  Construct a graph of the first variable for all states.  Be sure that your graph has descriptive axis labels and a good title.  Write a short paragraph where you describe the distribution of the first variable.
+
+```{r}
+na.omit(us_states) %>% group_by(Region) %>% summarise(avg_rate = mean(Homicide_Rate)) -> us_states_first
+
+ggplot(us_states_first) + geom_col(aes(Region, avg_rate), fill = "light blue", color = "black") + ggtitle("Regions vs Homicide Rate") + labs(y = "Average Homicide Rate")
+```
+
+
+The average Homicide rates in the Southern region is clearly higher than the Midwest, Northeast or the Western regions of the united states. The Homicide rate represents the percentage of Homicide.
+
+b.  Compare the Midwest and Southern states with respect to the first variable.  (Summary stats and graph.  Be sure that your graph has descriptive axis labels and a good title.)
+
+```{r}
+MidSW <- us_states %>% select(Region, Homicide_Rate) %>% filter(Region == "South" | Region == "Midwest") %>% group_by(Region)
+ggplot(MidSW) + geom_jitter(aes(Region,Homicide_Rate,color = Region)) + ggtitle("Homicide rates in the Southern and the Midwest States")
+```
+
+Clearly, the Midwest states are a bit over the place, half of the Midwest states Homocide rate are between 0 and 12. In contrast, most of the Southern states are spread between 5-15. The two comparisons could mean that the homicide rate differ drastically in the Midwest states than in the Southern states.
+
+
+c.  Display the five states that have the greatest values of the second variable.
+
+```{r}
+fiveSecond <- us_states %>% arrange(desc(Police_Amount))
+slice(fiveSecond, 1:5)
+```
+
+d.  Explore the relationship between the two variables.  Construct a scatterplot, which each region in coded using a different color.  Add a legend showing which color corresponds to what region.  What have you learned from this graph?
+
+```{r}
+ggplot(us_states) + geom_point(aes(Homicide_Rate, Police_Amount, color = Region)) + ggtitle("Homicide rate vs Police Amount in the US States by region")
+
+```
+The increase in homicide rate with decreasing police amount can be plainly witnessed in the graph. The Western states have lower homicide rate along with lower lower police amount than any of the other regions. The reason for this maybe because of certain underlying factors like education, unemployment, per capita income, etc.
+
+
+e. Construct a second scatterplot where points are labeled with the state abbreviation.  What have you learned from this graph?
+
+```{r}
+us_states %>% ggplot(aes(Homicide_Rate,Police_Amount, color=Region,label = abbreviate(State))) + geom_point() + 
+  scale_x_continuous(trans='log2') + geom_text() + ggtitle("State abbrevation" )
+
+```
+
+
+There is high homocide rate in the southern part of the country. This can be caused by many underlying factors such as mental health, unemployment, education and so on. 
+
+
+4.  The dataset murders in the dslabs package contains the number of murders and population of all states.  Compute the murder rates for all states and create a new data frame that merges the two data frames.  Divide the states into two groups by murder rate.  For each variable, compare the distributions of the variable for “small murder rate” and “large murder rate” states.  Summarize you have learned about how the variable differs for large murder-rate states and small murder-rate states.
+
+```{r}
+#install.packages("dslabs")
+
+
+
+library(dslabs)
+
+
+murders %>% mutate(muderRate = total/population*100000)-> murders
+
+murders %>% arrange(desc(muderRate)) -> murderDesc
+high_Murder <- slice(murderDesc, 1:25)
+low_Murder <-slice(murderDesc, 26:51)
+plot1 <- ggplot(high_Murder, aes(muderRate, color=region)) + geom_density() + ggtitle("High Muder Region") + theme(panel.background = element_rect(fill ="White", color = "black"),
+                                                                                                                   panel.grid.major = element_line(color="Black"))
+plot2 <- ggplot(low_Murder, aes(muderRate, color=region)) + geom_density() + ggtitle("Low Muder Region") + theme(panel.background = element_rect(fill = "White", color = "black"),
+                                                                                                                  panel.grid.major = element_line("Black"))
+             
+ggarrange(plot1, plot2)
+```
+
+
+In the high murder region there is high murder rate in the western region. Meanwhile, in the low murder region there is high muder rate in the southern region. 
