@@ -9,6 +9,11 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+```{r}
+library(tidyverse)
+library(stringr)
+```
+
 PART 1
 
 The webpage http://www.goodcarbadcar.net/2017/01/usa-2016-auto-brand-sales-results-rankings/ (Links to an external site.) contains car sales for 2016 and 2015 for the major automakers.
@@ -20,12 +25,25 @@ The webpage http://www.goodcarbadcar.net/2017/01/usa-2016-auto-brand-sales-resul
 2.  Create a html page containing (1) a sentence or two sentences introducing the data, and (2) a single html table with this sales data for the five manufacturers.  (Your table will have six rows and three columns.)  Make sure that this html page displays fine using a web browser.
 
 
-
 3.  Upload your html page to your personal website.
+https://raw.githubusercontent.com/olalede/RStudio-3430/master/Assignment-11b---HTML-Tables.html
 
 4.  Read your html page into R.  
+```{r}
+sales_data <- readLines("https://raw.githubusercontent.com/olalede/RStudio-3430/master/Assignment-11b---HTML-Tables.html")
+```
 
 5.  Using character manipulation commands, get the data from your html page into a data frame.  Display your data frame to make sure that it contains clean data.
+```{r}
+test_d <- sales_data[grep("td", sales_data)]
+test_d2 <- gsub('<td>|</td>', '', test_d)
+str_remove_all(test_d2, "<b>|</b>") -> test_d2
+d3 <- matrix((test_d2[-c(1:3)]), 5, 3, byrow = T)
+d4 <- data.frame(d3)
+colnames(d4) <- c("Automaker", "sales_2015", "sales_2016")
+d4
+```
+
 
 6.  Compute the percentage increase in sales for your five manufacturers.
 
