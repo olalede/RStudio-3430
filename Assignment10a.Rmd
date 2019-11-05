@@ -1,0 +1,94 @@
+---
+title: "Assignment 10a"
+author: "Damilare Olaleye"
+date: "October 29, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Libraries
+```{r}
+library(tidyverse)
+library(stringr)
+library(dplyr)
+library(wordcloud)
+library(tokenizers)
+
+```
+
+
+1.  Copy and paste the speech into a Word document — save in text (txt) format.  It would help if you put a blank line at the end of the file.  Name the file “presidentname.txt” where “presidentname” is the last name of the president.
+
+
+2.  Upload your file to your personal web site.
+
+
+
+3.  Read your file into R from your personal website.
+
+```{r}
+pres_speech <- readLines("https://raw.githubusercontent.com/olalede/RStudio-3430/master/Kennedy.txt")
+```
+
+4.  For your text data …
+
+— remove any punctuation or other strange symbols
+
+```{r}
+pres_speech <- str_replace_all(pres_speech, "\\.", "")
+pres_speech <- str_replace_all(pres_speech, "\\,", "")
+pres_speech <- str_replace_all(pres_speech, "\\--", " ")
+pres_speech <- str_replace_all(pres_speech, "\\'", "")
+pres_speech <- str_replace_all(pres_speech, "\\?", "")
+```
+
+— put all of the words in lower case
+
+```{r}
+pres_words <- unlist(str_split(pres_speech, " "))
+str_to_lower(pres_words) -> pres_words
+```
+
+— create a vector that contains all of the words in the speech
+```{r}
+preswords <- tokenize_words(pres_words)
+preswords
+
+```
+
+
+
+5.  Find the lengths of all of the words in the speech.  Tabulate the word lengths and graph the frequency distribution.
+
+```{r}
+word_lengths <- nchar(pres_words)
+word_freq <- data.frame(length = word_lengths)
+word_freq %>% filter(length > 0) %>% group_by(length) %>% summarise(N = n()) -> word_freq
+ggplot(word_freq) + geom_col(aes(length, N))
+```
+
+6.  Find the five longest words in the speech.
+
+```{r}
+five_longest <- data.frame(Word = pres_words, word_length = word_lengths)
+head(five_longest %>% filter(word_length > 0) %>% group_by(Word, word_length) %>% summarise(N = n()) %>% arrange(desc(word_length)), 5)
+```
+
+
+7.  How many times did the president use "America"?
+
+```{r}
+five_longest %>% filter(Word == "america") %>% select(Word) %>% summarise(count = n())
+```
+
+8.  Construct a word cloud of the words of lengths five or longer.
+
+```{r}
+words_cloud <- subset(five_longest, nchar(as.character(Word)) >= 5)
+words_cloud <- summarise(group_by(words_cloud, Word), count = n())
+wordcloud(words_cloud$Word, words_cloud$count)
+```
+ 

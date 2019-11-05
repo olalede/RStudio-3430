@@ -1,0 +1,85 @@
+---
+title: "Assignment 10b"
+author: "Damilare Olaleye"
+date: "November 1st, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(stringr)
+library(tidyverse)
+library(htmlwidgets)
+```
+Load file
+```{r}
+license_data <- read_csv("http://www-math.bgsu.edu/~albert/text/files/licenseplates.csv")
+plates <- license_data$Plate
+```
+
+1.  Find all license plates that begin with B.
+```{r}
+str_view_all(plates, "^B", match = T)
+
+```
+
+2.  Find license plates that end with 4.
+```{r}
+str_view_all(plates, "4$", match = T)
+
+```
+
+3.  Find license plates with 2 consecutive B's.
+```{r}
+str_view(plates, "BB", match = T)
+```
+
+4.  Find license plates with between 3 and 4 consecutive B's.
+```{r}
+match_B <- c("BBB", "BBBB")
+str_view_all(plates, match_B, match = T)
+```
+
+
+5.  Find all license plates that are of the form  "num, letter, num, letter, num, letter".
+```{r}
+str_view_all(plates, "\\d[^\\d]\\d[^\\d]\\d[^\\d]", match = T)
+```
+
+6.  Find all license plates that start with a number and end with a letter.
+```{r}
+str_view_all(plates, "\\d....[^\\d]", match = T)
+```
+
+7.  Find all license plates that either start or end with "AB".
+```{r}
+str_view_all(plates, "^AB|AB$", match = T)
+```
+
+8.  Find all license plates that contain one or more (AB)s.
+```{r}
+str_view_all(plates, "AB", match = T)
+```
+
+9.  Find all license plates that contain the pattern "a number, a number".
+```{r}
+str_view_all(plates, "\\d\\d", match = T)
+```
+
+10.  Find the license plates that are all letters.
+```{r}
+str_view_all(plates, "[^\\d][^\\d][^\\d][^\\d][^\\d][^\\d]", match = T)
+```
+11. Find the license plates that contain AA, BB, or CC.
+```{r}
+str_view_all(plates, "AA|BB|CC", match = T)
+```
+
+12. Find the license plates that contain only one letter.
+```{r}
+str_view_all(plates, "[^\\d][\\d][\\d][\\d][\\d][\\d]|[\\d][^\\d][\\d][\\d][\\d][\\d]|[\\d][\\d][^\\d][\\d][\\d][\\d]|[\\d][\\d][\\d][^\\d][\\d][\\d]|[\\d][\\d][\\d][\\d][^\\d][\\d]|[\\d][\\d][\\d][\\d][\\d][^\\d]", match = T)
+```
+

@@ -1,0 +1,96 @@
+---
+title: "String_Tools"
+author: "Damilare Olaleye"
+date: "11/5/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#### Exercises with String Tools in the stringr Package
+
+Load the ```stringr``` package.
+
+```{r}
+library(stringr)
+```
+
+```sentences``` is a vector of 720 "Harvard sentences" used for standardized testing of voice
+
+Use functions in the ```stringr``` package to answer the following questions.
+
+
+1.  How many sentences begin with "T"?
+```{r}
+str_view_all(sentences, "^T", match = T)
+```
+
+
+2.  How many sentences end with a period?
+```{r}
+str_view_all(sentences, ".$", match = T)
+```
+
+
+
+3.  How many sentences contain the word "the"?
+```{r}
+sum(str_detect(sentences, "the | the "))
+```
+
+
+
+4. Count the number of s's in the 27th sentence.
+```{r}
+str_count(sentences[27], "s")
+```
+
+
+
+5.  How many sentences contain three "the"s?
+```{r}
+sum(str_count(sentences, "the | the ") == 3)
+```
+
+
+
+6. Extract the sentences that contain a color.
+```{r}
+all_colors <- str_c(colors(), collapse = " | ")
+str_view(sentences, all_colors, match = T)
+```
+
+
+
+7.  Extract the sentences that contain more than one color.
+
+```{r}
+str_view_all(sentences[str_count(sentences, all_colors) > 1], all_colors, match = T)
+```
+
+
+8. Using the str_locate function, find the position of the word "easy" in the first sentence.  Interpret the output.
+
+```{r}
+str_locate(sentences[1], "easy")
+```
+The first sentence does not contain the word "easy" and hence, the start and end are NAs. If the first sentence contained the word "easy" then start would contain the starting index value of the letter "e" of "easy" and end would hold the index of "y". str_locate also counts whitespace as a character.
+
+9. Replace all vowels in the 23rd sentence with 7's.
+```{r}
+str_replace_all(sentences[23], "[aeiou]", "7")
+```
+
+
+10.  Find the longest word in the 23rd sentence.
+
+```{r}
+sent_23 <- unlist(str_split(sentences[23], " "))
+sent_23[nchar(sent_23) == max(nchar(sent_23))]
+```
+
+
+
+
