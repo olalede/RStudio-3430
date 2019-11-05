@@ -9,22 +9,32 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+PART 1
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+The webpage http://www.goodcarbadcar.net/2017/01/usa-2016-auto-brand-sales-results-rankings/ (Links to an external site.) contains car sales for 2016 and 2015 for the major automakers.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+1.  Collect the 2016 and 2015 sales for five manufacturers.
 
-```{r cars}
-summary(cars)
-```
+2015,2016 : Mazda, Infiniti, Lexus, Fiat, Subaru
 
-## Including Plots
+2.  Create a html page containing (1) a sentence or two sentences introducing the data, and (2) a single html table with this sales data for the five manufacturers.  (Your table will have six rows and three columns.)  Make sure that this html page displays fine using a web browser.
 
-You can also embed plots, for example:
 
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+3.  Upload your html page to your personal website.
+
+4.  Read your html page into R.  
+
+5.  Using character manipulation commands, get the data from your html page into a data frame.  Display your data frame to make sure that it contains clean data.
+
+6.  Compute the percentage increase in sales for your five manufacturers.
+
+7.  Using ggplot, construct a graph where the manufacturer names are on the vertical scale and the percentage increases on the horizontal scale.
+
+PART 2
+
+1.  Find a “top-10” table on a html page.  Read this html page into R.
+
+2.  Using character manipulation functions, create a data frame with this top-10 information.
+
+3.  Construct a good graph of this top-10 data.
