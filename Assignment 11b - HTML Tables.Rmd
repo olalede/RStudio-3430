@@ -26,11 +26,11 @@ The webpage http://www.goodcarbadcar.net/2017/01/usa-2016-auto-brand-sales-resul
 
 
 3.  Upload your html page to your personal website.
-https://raw.githubusercontent.com/olalede/RStudio-3430/master/Assignment-11b---HTML-Tables.html
+https://raw.githubusercontent.com/olalede/RStudio-3430/master/Assignment_11b_website.html
 
 4.  Read your html page into R.  
 ```{r}
-sales_data <- readLines("https://raw.githubusercontent.com/olalede/RStudio-3430/master/Assignment-11b---HTML-Tables.html")
+sales_data <- readLines("https://raw.githubusercontent.com/olalede/RStudio-3430/master/Assignment_11b_website.html")
 ```
 
 5.  Using character manipulation commands, get the data from your html page into a data frame.  Display your data frame to make sure that it contains clean data.
@@ -47,12 +47,72 @@ d4
 
 6.  Compute the percentage increase in sales for your five manufacturers.
 
+```{r}
+d4$Automaker <- as.character(d4$Automaker)
+d4$sales_2015 <- as.numeric(as.character(d4$sales_2015))
+d4$sales_2016 <- as.numeric(as.character(d4$sales_2016))
+d4 %>% mutate(Increase = round((((sales_2016 - sales_2015)/sales_2015)*100), 2)) -> d4
+d4
+```
+
+
 7.  Using ggplot, construct a graph where the manufacturer names are on the vertical scale and the percentage increases on the horizontal scale.
+
+```{r}
+ggplot(d4) + geom_col(aes(Automaker, Increase), fill = "light blue", color = "black") + coord_flip() + ggtitle("Percentage increase of Automakers in the years 2015 and 2016")
+```
+
+
 
 PART 2
 
 1.  Find a “top-10” table on a html page.  Read this html page into R.
 
+```{r}
+table_page <- readLines("https://www.worldatlas.com/articles/the-10-largest-cities-in-the-world.html")
+```
+I used worldatlas website to grab data on the top 10 largest cities by population.
+
+
 2.  Using character manipulation functions, create a data frame with this top-10 information.
 
+```{r}
+table_data <- table_page[461:464]
+str_replace_all(table_data, "<td>|</td>", " ") -> table_data
+str_remove_all(table_data, "<tbody>|</tbody>") -> table_data
+str_remove_all(table_data, "</tr>|<tr>") -> table_data
+str_remove_all(table_data, "<thead>|</thead>") -> table_data
+str_replace_all(table_data, "</th>|<th>", " ") -> table_data
+str_remove_all(table_data, "<table data-role=\"table\">") -> table_data
+str_remove_all(table_data, "\\$") -> table_data
+str_remove_all(table_data, ",") -> table_data
+str_remove_all(table_data, "�") -> table_data
+table_data <- unlist(str_split(table_data, "  "))
+table_data <- table_data[nchar(table_data) > 0]
+ 
+table_matrix <- matrix((table_data[-c(1:4)]), 10, 4, byrow = T)
+table_df <- data.frame(table_matrix)
+colnames(table_df) <- c("Rank", "City", "Country", "Population")
+
+table_df$Rank <- as.numeric(as.character(table_df$Rank))
+table_df$City <- as.character(table_df$City)
+table_df$Country <- as.character(table_df$Country)
+table_df$Population <- as.numeric(as.character(table_df$Population))
+
+head(table_df, 10)
+```
+Top 10 largest cities by population stored in a dataframe.
+
 3.  Construct a good graph of this top-10 data.
+
+```{r}
+ggplot(head(table_df, 10)) +
+  geom_bar(stat = "identity", fill = "light pink", color = "grey1", aes(x = reorder(City, Population), y = Population/1000000)) +
+  ggtitle("Top 10 Largest Cities by Population") +
+  ylab("Population in millions") +
+  xlab("Country") +
+  coord_flip()
+```
+
+It is evident from the above graph that China has two of the most populous cities with nearly 45 million people followed by Karachi of Pakistan which is very close to Beijin. The top five largest cities are all located in South East Asia.
+
