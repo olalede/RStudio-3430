@@ -1,0 +1,72 @@
+---
+title: "Assigment 13 - Exploring Twitter"
+output: html_document
+author: "Damilare Olaleye, Ashkan Dastani" 
+Date: "Nov 15 2019"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Libraries
+```{r}
+library(tidyverse)
+library(quanteda)
+library(tm)
+library(twitteR)
+```
+
+Load file into R
+```{r}
+moody <- read_csv("http://www-math.bgsu.edu/~albert/twitter/moodyblues.csv")
+```
+
+Are there specific words that frequently appear in the 100 tweets?
+```{r}
+moody_text <- moody$text
+moody_text <- unlist(str_split(moody_text, " "))
+str_to_lower(moody_text) -> moody_text
+moody_text <- data.frame(moody_text[nchar(moody_text) > 0])
+colnames(moody_text)<- "Words"
+moody_text %>% group_by(Words) %>% summarise(N = n()) %>% arrange(desc(N)) -> moody_text_freq
+head(moody_text_freq, 20)
+```
+Answer:
+
+From the table of words displayed above, we can see that the hashtag #moodyblues has the most frequent phrase followed by the common article "the" and rt which stands for retweet. A frequent english word that appeared in the table and have less than half the times as #moodyblues is the word "tonight"" which appeared 35 times.
+
+
+What were some long words that were used?
+```{r}
+moody_text %>% group_by(Words) %>% mutate(length = nchar(as.character(Words))) %>% arrange(desc(length))
+```
+Answer: 
+
+The long words that were used are markup language strings that are hard to understand, and links with twitter hashtags.Hasktags and links are the strings that were longer than 10.  
+
+How many words was typical in a tweet?
+```{r}
+moody_sentences <- moody$text
+mean(str_count(moody_sentences, " "))
+```
+
+
+What was a typical lexical diversity in a tweet?
+```{r}
+  one.tweet.work <- function(j, moody){
+   words <- unlist(strsplit(moody$text[j], " "))
+   words <- gsub("^@.*", "", words)
+   words <- gsub("RT", "", words)
+   words <- gsub("^(https).*", "", words)
+   words <- removePunctuation(words)
+   words <- tolower(words)
+   words <- words[nchar(words) > 0]
+   100 * length(unique(words)) / length(words)
+}
+sapply(1:100, one.tweet.work, moody) -> lex_div
+
+ggplot(data.frame(Lexical_Diversity=lex_div), aes(Lexical_Diversity)) + geom_dotplot(dotsize=0.3)
+```
+
+The graph above shows that most of the tweets have a good lexical diversity with unique words. 

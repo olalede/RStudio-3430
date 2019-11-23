@@ -1,0 +1,107 @@
+---
+title: "Assignment 12 - Introduction to Twitter"
+output: html_document
+author: "Damilare Olaleye"
+Date: "Nov 15 2019"
+---
+
+1.  In 140 characters or less, give a definition of Twitter.
+
+Answer: Twitter is a social media platform where users share their thoughts/opinions or view others' as they desire. It is instantaneous.
+
+2.  Why is Twitter not a social network (like Facebook and LinkedIn)?
+
+Answer: Twitter is not a social network as there is no mutual agreement between two users in order for them to interact with each other. In twitter, a user can follow another user without having the other user follow back or accept any form of agreement. However, there are private twitter accounts which does require the private user to authorize a follow request when there's one.
+
+
+3.  As described in the chapter, Twitter is an example of an interest graph that is a way of modeling __connections__ between people and their _arbritrary interests_.
+
+4.   Does a Twitter user need to be a real person?  Do you think Elvis is a Twitter user?
+
+Answer: No. A twitter user can represent anyone or anything. The book mentions @HomerJSimpsons which is the twitter handle for The Simpsons character Homer who is a fictional cartoon character. 
+
+
+5.  Read Twitter’s Terms of Service agreement?  Describe one restriction that you find in this agreement.
+
+Answer: https://help.twitter.com/en/rules-and-policies/twitter-rules
+
+Twitter does not allow the sharing of hacked materials that contains personally identifiable information or that could put people in danger/harm, or that contains trade secrets.
+
+6.  What is a taxonomy?  How does that differ from a “folksonomy”?
+
+Answer: Taxonomy is the process of classifying elements into a hierarchical structure as in a parent child relationship. Folksonomy is the universe of collaborative tagging and social indexing efforts that emerge in various ecosystems of the Web. In essence, it's the labels or the tags that users create for different things on the internet.
+
+
+7.  What is the metadata contained in a particular tweet? (Besides the 140 characters of text content.)
+
+Answer: The other metadata of a tweet comprises of the hastags, user mentions, location data, URLs, media (photos or videos) etc.
+
+8.  Describe all of the metadata contained in this sample tweet.
+@ptwobrussell is writing @SocialWebMining, 2nd Ed. from his home office in Franklin, TN. Be #social: http://on.fb.me/16WJAf9
+
+Answer: The 125 characters are the textual metadata.
+The above tweet has two user mentions @ptwobrussell and @SocialWebMining.
+There is the location of Franklin, Tennessee.
+There is a hashtag #social.
+
+9.  What is a Twitter timeline?
+
+Answer: Timeline is the chronological display of tweets. In case of a user when the user profile page is visited, the user timeline is the collection of tweets of that particular user diplayed in chronological order. In general, the tweets in the homepage when a user logs in to twitter are also in chronological order.
+
+10.  What URL would you type to find the timeline for RStudio?
+
+Answer: https://twitter.com/rstudio
+
+11.  What is a Twitter stream?
+
+Answer: A twitter stream is a small sample of public tweets that appears on the timeline in realtime as they are tweeted.
+
+12.  When there is an important public event, how many tweets can be received in a minute?
+
+Answer: There could be hundreds of thousands of tweets per minute if the event is popular enough.
+
+13.  Special functions in the twitteR package allow you to request different types of twitter data.  Describe brief the purpose of several of the twitteR functions described in the article http://geoffjentry.hexdump.org/twitteR.pdf
+
+Answer: 
+getUser : This function displays all the information of a public user (following, followers, retweets, etc.). For private accounts, authentication and granted access would be required.
+searchTwitter : This function can be used to search twitter for specific phrases or hashtags.
+strip_retweets : This function removes all the API-based retweets from Twitter.
+
+Pages 26 - 36  (Data analysis of Twitter data)
+
+14.  What is a frequency analysis of tweets?
+
+Answer: Frequency analysis is the counting of countable elements of a tweet. Frequency analysis creates key value pairs corresponding to terms and their frequencies. The keys may be the number of retweets, the number of favorites, etc.
+
+15.  What can you learn from a frequency analysis?  (See pages 31 and 32.)
+
+Answer: From a frequency analysis, the relation or the correlation between different trending hashtags or people can be deduced.
+
+16.  What is the lexical diversity of tweets?  Why is this a useful thing to measure?
+
+Answer: Lexical diversity of tweets is the measure of uniqueness in word choices i.e. the measure of different words to measure redundancy or loss of meaning. It is a useful thing to measure as with the analysis of lexical diversity of different twitter users, one can compare the effectiveness of the tweets that results from either higher or lower lexical diversity.
+
+17.  Why would it be interesting to compare the lexical diversity of Coca-Cola and Pepsi?
+
+Answer: It would be interesting to compare Pepsi and Coca-Cola as they are both big corporations and their lexical diversity measures of their tweets would give insights on whose tweets are more effective.
+
+18.  What is the formula for calculating the lexical diversity of tweets?  Can you write this using R functions?
+
+Answer: The formula for calculating the lexical diversity is (number of unique tokens(or words) ? total number of tokens). Yes, the lexical diversity function can be made using R functions like unlist(x, " ") to separate each tokens, str_to_lower to lowercase all the tokens, table() to get all the unique tokens and the total number of tokens, etc.
+
+
+19.  What is the interpretation of a lexical diversity of 0.67 measured in the words of a particular tweet?
+
+Answer: 0.67 means that there are 2 out of 3 words are unique in a given tweet.
+
+
+20.  What do you learn from computing the lexical diversity of screen names?  of hashtags?
+
+Answer: Lexical diversity of screen names would be close to 1 as most screen names are unique. Hashtags would have very low lexical diversity as a large number of users would be using the same hashtags for their tweets.
+
+21.  What is a retweet?  What type of pattern in retweets would one be interested in? (See page 36.)
+
+Answer: A retweet is the reposting or sharing the tweet of someone else's.
+From looking at the pattern in retweets, one could infer the commonalities between the interests and the connections of the users that retweets and the original poster as well.
+
+ 

@@ -1,0 +1,31 @@
+---
+title: "Assignment 13 - Mapping Data"
+output: html_document
+author: "Damilare Olaleye"
+date: "November 22, 2019"
+---
+
+Loading libraries
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(maps)
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Creating Maps in R Using Data in the Base R Package
+
+The document “Maps in S” gives you an introduction to the basic mapping functions in R. 
+The html file “Introduction to Maps”  illustrates these functions.
+The html file “Coloring a US Map” shows how you can use a variable to color the states of the U.S.
+
+
+1.  Draw a map of a state that you’d like to visit in the continental United States.  Construct a data frame of the locations (latitude and longitude) of five cities  in the state.  Plot the locations of the cities on your map with the size of the plotting point proportional to the population of the city.  Label all of the points with the name of a city and add a title to your graph.
+
+
+
+2.  Using the ggplot2 package, draw a map of the United States.  Using data from the 2016 presidential election, classify each state as either “red” (Republican) or “blue” (Democrat).  Color the states using these colors.  What have you learned about the pattern of Republican and Democratic support in the United States?
+
