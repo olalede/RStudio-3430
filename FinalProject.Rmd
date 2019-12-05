@@ -1,0 +1,179 @@
+---
+title: "Final Project"
+authors: "Damilare Olaleye & Ashkan Dastini"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+This is data from Pronto, which is Seattle's cycle sharing system with 500 bikes and 50 stations located throughout the city.
+This is data on all 2015 trips.
+
+Some notes about the data are trips of duration less than one minute or greater than eight hours were removed from original table and
+
+Gender and birth year are only available for Annual Members.
+
+
+-starttime: day and time trip started, in PST
+
+-stoptime: day and time trip ended, in PST
+
+-tripduration: time of trip in seconds 
+
+-from_station_name: name of station where trip originated
+
+-to_station_name: name of station where trip terminated 
+
+-usertype: "Short-Term Pass Holder" is a rider who purchased a 24-Hour or 3-Day Pass; "Annual Member" is a rider who purchased an Annual Membership
+
+-gender: gender of rider 
+
+-birthyear: birth year of rider
+
+-bikeid: ID attached to each bike
+
+-trip_id: numeric ID of bike triptrip taken
+
+-from_station_id: ID of station where trip originated
+
+-to_station_id: ID of station where trip terminated
+
+
+## Questions
+
+1.  How long are typical bike trips?
+
+2.  What ages and gender are taking bike trips?
+
+3.  What are popular stations to depart and arrive?
+
+4.  What days and times are popular for taking bike trips?
+
+5.  How Annual Members differed from Short-Term Pass Holders?
+
+
+
+## R Markdown
+
+```{r}
+library(tidyverse)
+ds <- read_csv("https://gitlab.com/sdeka/r-final-project/raw/c1543d176a055765af6d3b746fe2b512b8b0d020/pronto_cycle_trip.csv")
+ds %>% mutate(age = 2015 - birthyear) ->ds
+ds %>% filter(trip_id != 59000) -> ds
+ds
+```
+
+```{r}
+ggplot(ds, aes(age)) + geom_bar(width = 1, color = "black", fill = "lightblue") + ggtitle("Age of Members") + xlab("Age")
+```
+
+It seems that most users are between the ages of 20 and 40. We also see a large spike just before the 30 year old mark.  Not surpirsingly there are very few members in the higher age ranges. But, there are also almost no under 20 year old users.
+
+
+```{r}
+ds %>% mutate(tripinmin = tripduration/60) -> ds2
+
+ggplot(ds2, aes(tripinmin)) + geom_histogram(color = "black", fill = "lightblue", binwidth = 5) + xlab("Trip Duration in Minutes") + ggtitle("Trip Duration of Users")
+```
+
+It seems that most trips are very short.  After the one hour mark the number of trips is very low.  But, there does seem to be a large number of outliers. Even up past the 400 minute mark there are still some trips.
+
+```{r}
+ds2 %>% filter(!is.na(gender)) -> ds3
+ggplot(ds3, aes(gender)) + geom_bar() + ggtitle("Gender of Members")
+```
+
+This shows that the vast majority of users are Male.  The femail and other category combined do not even come close to the number of male riders.
+
+```{r}
+ggplot(ds3, aes(gender, tripinmin)) + geom_boxplot() + coord_flip() + ylim(0,100) + ggtitle("Member Trip duration by Gender")
+```
+
+It seems that even though males are more prevalent, the female and other categories on average take longer trips than males. But, there where still a very large number of outliers. 
+
+
+```{r}
+ds2 %>% group_by(age) %>% 
+  summarize(N = n(), avgtripinmin = mean(tripinmin)) %>%  arrange(desc(N)) -> avgtripbyage
+avgtripbyage
+
+ggplot(avgtripbyage, aes(age, avgtripinmin)) + geom_point() + ggtitle("Average trip length by age")
+```
+This shows that the average is usually below 20 minites. The large averages are the 71 year old group and 84 year old group. The 71 year olds had only 2 users and 84 year olds only have 1 so in that age group so just one of them taking a long trip exagerates their average.
+
+```{r}
+ggplot(ds2, aes(usertype, tripinmin)) + geom_boxplot() + coord_flip() + ylim(0,100) + ggtitle("Members vs Short Term pass holders trip duration")
+```
+
+Surprisingly the short-term pass holders on average had longer trips than the members do.  Each group still had a large number of outliers but the maximum from the members is just slightly longer than the average from short-term pass holders.
+
+
+```{r}
+ds %>% group_by(from_station_name) %>% 
+  summarize(N = n()) %>%  arrange(desc(N)) ->popfromstations
+popfromstations
+head(popfromstations)
+head(popfromstations %>% arrange(N))
+```
+
+The most popular stations to depart from are Pier 69 / Alaskan Way & Clay St, E Pine St & 16th Ave, 3rd Ave & Broad St, 2nd Ave & Pine St, Westlake Ave & 6th Ave, and E Harrison St & Broadway Ave E.
+The least popular stations to depart from are Pronto shop, 8D OPS 02, Pronto shop 2, Pier 66 / Alaskan Way & Bell St, UW McCarty Hall / Whitman Ct, and Thomas St & 5th Ave N.
+
+
+```{r}
+ds %>% group_by(to_station_name) %>% 
+  summarize(N = n()) %>%  arrange(desc(N)) -> poptostations
+poptostations
+head(poptostations)
+head(poptostations %>% arrange(N))
+```
+
+The most popular stations to arrive at are 2nd Ave & Pine St, Pier 69 / Alaskan Way & Clay St, Westlake Ave & 6th Ave, 3rd Ave & Broad St, PATH / 9th Ave & Westlake Ave, and Occidental Park / Occidental Ave S & S Washington St.
+The least popular stations to arrive at are 8D OPS 02, Pronto shop 2, Pronto shop, Pier 66 / Alaskan Way & Bell St, Broadway and E Denny Way, and UW McCarty Hall / Whitman Ct.
+Un-surprisingly the least and most popular stations to depart from and arrive at are very similar.
+
+```{r}
+ds %>% mutate(timeofdaystarted = starttime) -> ds4
+ds4 %>% mutate(timeofdaystarted = substr(timeofdaystarted, 11, 16)) -> ds4
+ds4 %>% mutate(timeofdaystopped = stoptime) ->ds4
+ds4 %>% mutate(timeofdaystopped = substr(timeofdaystopped, 11, 16)) -> ds4
+ds4
+```
+
+```{r}
+library(lubridate)
+ds4 %>% mutate(timeofdaystarted = ((as.numeric(seconds(hm(timeofdaystarted))))/60)/60) -> ds5
+ds5
+ggplot(ds5, aes(timeofdaystarted)) + geom_histogram(color = "black", fill = "lightblue") + ggtitle("Time of Day the Cycling trip Started")
+```
+
+It seems that most people are taking trips just before 10am or just before 8pm. There are very few late at night or very early in the morning.  This does roughtly correspond to the hours you would go to or leave work, a 9am-5pm or 8am-4pm work cycle.
+
+```{r}
+ds5 %>% mutate(timeofdaystopped = ((as.numeric(seconds(hm(timeofdaystopped))))/60)/60) -> ds5
+ds5
+ggplot(ds5, aes(timeofdaystopped)) + geom_histogram(color = "black", fill = "lightblue") + ggtitle("Time of Day the Cycling trip Ended")
+```
+
+Since most trips are very short the this graph looks very similar to the time of day that trips started. For similar reasons.
+
+```{r}
+ds5 %>% mutate(dayofweek = starttime) -> ds5
+ds5 %>% mutate(dayofweek = substr(dayofweek, 0, 10)) -> ds5
+
+ds5 %>% mutate(dayofweek = wday(mdy(dayofweek), label = TRUE)) -> ds5
+ds5
+
+ds5 %>% filter(!is.na(dayofweek)) -> ds6
+
+```
+
+```{r}
+ggplot(ds6, aes(dayofweek)) + geom_bar(color = "black", fill = "lightblue") + ggtitle("Day of the week that is popular for bike trips")
+```
+
+From this we can see that the least popular day to use the bike sharing is on sunday. Saturday is the second least popular day for a trip. All of the week days are fairly similar to each other but monday seems to be the least popular of the week days.

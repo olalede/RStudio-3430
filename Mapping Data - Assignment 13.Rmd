@@ -25,7 +25,36 @@ The html file “Coloring a US Map” shows how you can use a variable to color 
 
 1.  Draw a map of a state that you’d like to visit in the continental United States.  Construct a data frame of the locations (latitude and longitude) of five cities  in the state.  Plot the locations of the cities on your map with the size of the plotting point proportional to the population of the city.  Label all of the points with the name of a city and add a title to your graph.
 
+```{r}
+Cities <- c("Los Angeles", "Fresno", "San Francisco", "Sacramento ", "Bakersfield")
+Cities_Lat <- c("34.052235", "36.746841", "37.733795", "38.575764", "35.393528")
+Cities_Lon <- c("-118.243683", "-119.772591", "-122.446747", "-121.478851", "-119.043732") 
+Cities_pop <- c("3971883", "527438 ", "884521", "490712", "373640")
+cities_df <- data.frame(as.character(Cities), as.numeric(Cities_pop), as.numeric(Cities_Lat), as.numeric(Cities_Lon))
+colnames(cities_df) <- c("City", "Population", "Latitude", "Longitude")
+cities_df
+```
+```{r}
+map('county', 'california')
+cities_coords <- data.frame(lon=Cities_Lon, lat = Cities_Lat)
+points(cities_coords, cex=2, col="red", pch=19)
+text(cities_df$Longitude, cities_df$Latitude, cities_df$City, pos=1)
+title("I will like to visit Califonia. Five Cities in California.")
 
+```
 
 2.  Using the ggplot2 package, draw a map of the United States.  Using data from the 2016 presidential election, classify each state as either “red” (Republican) or “blue” (Democrat).  Color the states using these colors.  What have you learned about the pattern of Republican and Democratic support in the United States?
+
+```{r}
+state_2016_map <- read_csv("https://raw.githubusercontent.com/olalede/RStudio-3430/master/us_states_2016_election_us.csv")
+state_2016_map$Color <- str_to_lower(state_2016_map$Color)
+all_states <- map_data("state")
+state_2016_map$region <- tolower(state_2016_map$State)
+graph_states <- right_join(all_states, state_2016_map, by="region")
+
+ggplot(graph_states) + geom_polygon(aes(x = long, y = lat, group = region), fill = graph_states$Color, color = "black") + coord_fixed(1.3) + guides(fill = F, color = F) + ylab('Latitude') + xlab('Longitude')
+```
+
+Mainland states leans to democratic, while the suburbs leans republican. There are also more red states than the blue states . Red states share at least one border with one other red state, while this is not true with the blue states
+
 
