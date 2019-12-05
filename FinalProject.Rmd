@@ -61,7 +61,7 @@ Gender and birth year are only available for Annual Members.
 
 ```{r}
 library(tidyverse)
-ds <- read_csv("https://gitlab.com/sdeka/r-final-project/raw/c1543d176a055765af6d3b746fe2b512b8b0d020/pronto_cycle_trip.csv")
+ds <- read_csv("https://raw.githubusercontent.com/olalede/RStudio-3430/master/trip.csv")
 ds %>% mutate(age = 2015 - birthyear) ->ds
 ds %>% filter(trip_id != 59000) -> ds
 ds
@@ -146,7 +146,7 @@ ds4
 
 ```{r}
 library(lubridate)
-ds4 %>% mutate(timeofdaystarted = ((as.numeric(seconds(hm(timeofdaystarted))))/60)/60) -> ds5
+ds4 %>% mutate(timeofdaystarted = ((as.numericd(seconds(hm(timeofdaystarted))))/60)/60) -> ds5
 ds5
 ggplot(ds5, aes(timeofdaystarted)) + geom_histogram(color = "black", fill = "lightblue") + ggtitle("Time of Day the Cycling trip Started")
 ```
