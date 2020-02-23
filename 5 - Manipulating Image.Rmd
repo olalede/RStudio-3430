@@ -1,0 +1,52 @@
+---
+title: "5 Manipulating Image"
+output: html_document
+author: "Damilare Olaleye"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(pixmap)
+```
+
+```{r}
+("/Users/damilareolaleye/Desktop/RStudio-3430/logo.pgm")
+
+```
+
+#convert to pgm file 
+```{r}
+logo <- read.pnm('logo.pgm')
+str(logo)
+plot(logo)
+
+```
+
+```{r}
+logo@grey[1:10,1:10]
+```
+
+```{r}
+logo1<- logo
+logo1@grey <- 1 - logo@grey
+plot(logo1)
+
+```
+
+```{r}
+logo2 <- logo
+logo2@grey < 1 - 0.3 * (1-logo@grey)
+plot(logo2)
+
+```
+
+# the closer it is to 1 from 0.3 the lighter it becomes 
+```{r}
+logo2 <- logo
+logo2@grey[350:512,350:512] <- 1
+plot(logo2)
+```
+

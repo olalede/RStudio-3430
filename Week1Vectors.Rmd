@@ -1,0 +1,202 @@
+---
+title: "ClassWeek1"
+output: html_document
+author: "Damilare Olaleye"
+---
+
+# Vectors 
+
+# Different ways to generate or construct vectors 
+
+x <- c(1,5,-1,3,2) # c() combines values into a vector
+print(x)
+x = c(1,5,-1,3,1,2)
+print(x)
+
+y = 1:5
+print(y)
+
+#decreasing order --- 5,4,3,2,1
+5:1
+
+#attaches element of x to y 
+c(x,y)
+
+#elements of x combines to elements of y
+c(x,c(90,100),y)
+
+#another way is to use the sequence function... by= increment of the sequence
+seq(from=0,to=1,by=0.2)
+
+#vector of the particular length, sequence from 0 to 1 of length 5
+seq(0,1,length.out = 5)
+
+#another way to use vector is to use the repeat function
+rep(1, times=5)
+
+#vector x which each element repeat twice
+rep(x, each=2)
+
+#combines or repeat x with itself
+c(x,x)
+
+#combines or repeat entire x twice
+rep(x, twice=2)
+
+#vector of strings 
+
+y <- c('John','Mary','Bob','Anna')
+print(y)
+
+#vector of logical values i.e true or false value
+y = c(TRUE,FALSE,F,T)
+print(y)
+
+#Vector indexing ... access particular element in the vector
+x
+x[3] # to extract 3rd element
+x[2:5] # to extract 2nd through 5th elements
+
+#to get the length of a vector
+length (x)
+
+#to add extra value or new value to particular element we want
+x[6]=0 # add 6th element of value 0
+
+#to print in the reverse order
+x[length(x):1]
+
+#to change value of the element 
+x[5] = 1 #add 1 to element of value 5
+
+# negative index extract all element 
+x[-1] # extract all element except 1st
+
+# use true or false to extract element from list
+x[c(T,T,T,F,F,F)]
+
+v=1:2
+y[v]
+
+#we can convert numbers in to strings 
+c(x,y) # numeric values are converted into strings
+
+#to generate an empty vector z
+z=vector() # or z=NULL or z=c()
+
+z[1] =3 # first vector 3
+z[2] =5 # second vector 5
+print(z)
+
+#vector opeartions
+c(1,4,5)+c(-1,2,0) # elementwise addition
+c(1,4,5)-c(-1,2,0) # elementwise subtration
+c(1,4,5)*c(-1,2,0) # elementwise multiplication
+c(1,4,5)/c(-1,2,0) # elementwise division
+
+#add two vectors of different length
+c(1,4)+c(-1,2,0) #the same as adding c(1,4,1)+c(-1,2,0) r recyled the first element
+
+#the same as adding c(1,4,5)+c(1,1,1)
+c(1,4,5) + 1
+
+#module operator... this is the same as c(1,4,5) %% c(2,2,2)
+c(1,4,5) %% 2
+
+#element by element operator
+x
+x>1 # same as c(x) > c(1,1,1,1,1,1)
+
+#extract all element greater than 1 
+x[x>1]
+
+#functions take vectors and split out numbers
+sum(x)
+mean(x)
+median(x)
+range(x)
+sd(x)
+
+# how to define a function
+# 1.) give a name to the function
+# 2.) keyword function
+# 3.) pass list of arguments
+# 4.) Body
+# 5.) return value using the keyword return
+
+#example 1
+f=function(x) {
+ return (x^2)
+}
+f(2)
+f(-3)
+f(c(-1,0,4))
+
+#global variable with example 2
+t =3
+y = 2
+
+#example 2 with scoping
+# declear a local variable d and t
+
+g=function(x){
+  d= 5
+  t = 10
+  return(d+x+y)
+}
+
+# to change within a function value of a variable t<<10
+g(3) # 5 +3 +2 
+print(d) # d is local variable
+print(t)
+
+# finding the Euclidean distance
+D1= function(x,y,p=2){
+  s=0  #s - sum
+  n = length(x)
+  for(i in 1:n){
+    s=s+abs(x[i]-y[i])^p
+  }
+  return(s^(1/p)) # or s^(1/p)
+}
+
+
+u <- c(1,0,3)
+v <- c(1,3,7)
+D1(u,v)
+D1(x=u,y=v)
+D1(u,v,p=3) #to overite the default value
+
+
+# finding the Euclidean distance
+D2= function(x,y,p=2){
+  return(sum(abs(x-y)^p)^1/p)
+}
+
+
+u <- c(1,0,3)
+v <- c(1,3,7)
+
+D2(u,v)
+D2(x=u,y=v)
+D2(u,v,p=3) #to overite the default value
+
+#using indicies returning values vs returning index
+
+x <- gpa
+x[x > 3.7] #returns values
+subset(x. x>3.7)
+which(x > 3.7) #returns indices
+x[which(x > 3.7)]
+
+#to get the length
+length(which(x>3.7)) #returns the number of students with gpa > 3.7
+sum(x>3.7)
+ifelse(x>3.7,'Excellent','Good')
+
+
+#combine numbers and vectors
+c(3,4,c(-1,-5))
+c(3,4,list(a=1,b=3)) #combine lists using c()
+
+#generic 

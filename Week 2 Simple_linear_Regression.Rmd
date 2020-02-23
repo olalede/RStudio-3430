@@ -1,0 +1,57 @@
+---
+title: "Simple_Linear_Regression Week 2"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#predict <- 
+#residual <- 
+#positive: above line 
+#negative residual: below line
+#fitted value = on the line
+#coefficients = observed value - fitted value
+#least square line : lm(dist ~ speed, data = cars) or we can use lm(y variable ~ x variable, data = our dataset)
+#To extract our least sqaure lime (lm):
+#my_fit <- lm(dist ~ speed, data = cars)
+#names(my_fit)
+#s <- summary(my_fit)
+#names(my_fit)
+#fitted values or fitted point: ^y = als + blsX
+#residual values = y - y^
+
+# Simple least squares regression Examples using the cars dataset
+
+head(cars)
+
+plot(cars$speed,cars$dist)
+abline(a=-10,b=3) #a=intercept, b=slope
+#finding the least square line
+my_fit <- lm(dist ~ speed, data = cars)
+names(my_fit)
+abline(a=my_fit$coefficients[1], b=my_fit$coefficients[2], col="brown") #plot ls 
+points(cars$speed, my_fit$fitted.values, col="orange", pch=19) #plot fitted values or fitted point
+
+a=my_fit$coefficients[1] #residuals using formula
+b=my_fit$coefficients[2] #residuals using formula
+yhat <- a+b*cars$speed #compute fitted values
+
+#fitted values are the same as predicted values 
+head(yhat)
+head(my_fit$fitted.values) #extract fitted values from my_fit
+head(cars$dist - yhat) #residual values = y - y^ 
+head(my_fit$residuals) #residual values from my_fit
+
+head(cars$speed)
+#finding the predicted values at 5 or 15
+a+b*5
+a+b*15
+
+#we can also use predict
+predict(my_fit,data.frame(speed=c(5,10,21)))
+
+#to check the x values in the dataset
+yhat[1:15]
+

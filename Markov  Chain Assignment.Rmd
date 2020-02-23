@@ -1,0 +1,143 @@
+---
+title: "6 Markov Chain Turn-in"
+output: html_document
+date: "02/09/2020"
+author: "Damilare Olaleye"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(maps)
+```
+
+
+#### Another Random Walk
+
+Here is another example of a random walk that can be represented as a Markov Chain.
+
+- One has five states A, B, C, D, E
+- If you are currently at state A, you will stay at A (probability 0.5) or move to B (probability 0.5) on the next step
+- If you are currently at B, C, or D, you remain there with probability 0.5, otherwise you move to the left or the right with changes 0.25 and 0.25, on the next step
+- E is an absorbing state -- if you go there, you remain there with probability 1 on the next step.
+
+#### Question 1
+
+Write a 5 x 5 matrix P giving the transition probabilities. Make sure that each row of your matrix sums to one.
+
+```{r}
+P <- matrix(c(0.5,0.25,0,0,0,0.5,0.5,0.25,0,0,0,0.25,0.5,0.25,0,0,0,0.25,0.5,0,0,0,0,0.25,1),5,5)
+colnames(P)<-c("A","B","C","D","E")
+rownames(P)<-c("A","B","C","D","E")
+
+P
+```
+
+
+
+#### Question 2
+
+Compute the transition matrix P3 = P * P * P, where this indicates matrix multiplication.
+
+Starting at state A, find the probability of landing at state C after 3 moves.
+
+Starting at state D, find the probability of landing at state E after 3 moves.
+
+```{r}
+P3 <- P %*% P %*% P
+
+P3
+
+```
+Starting State A is 0.312500 landing at State C after 3 moves is 0.18750
+Starting State D is 0.15625 landing at E  after 3 moves is 0.453125
+
+#### Question 3
+
+Compute the fundamental matrix.
+
+Starting at A, how long will the walker spend, on average, on state C, before ending?
+
+Starting at A, how many steps will the trip take, on average?
+
+```{r}
+fmatrix <- solve(diag(4) -P[1:4, 1:4 ])
+fmatrix
+```
+Starting at A, how long will the walker spend, on average, on state C, before ending? 8
+Starting at A, how many steps will the trip take, on average? 
+
+#### Some Baseball
+
+- In a baseball half-inning, a plate appearance consists of a particular batter facing a pitcher. We consider the "state" of an inning as the current number of outs and configuration of runners on base. Since there are three possible out situations (0, 1, or 2) and eight configurations of runners on base, there are 3 x 8 = 24 different states.
+
+- A half inning starts in the "0 outs and no runners on base" situation. Every play in baseball will move into a new state.
+
+- A half-inning ends when there are three outs -- this "3 outs" state is absorbing.
+
+
+#### Markov Chain
+
+One can represent movements between "outs and runners on base" states by means of a Markov Chain. There are 25 possible states and one represents movements between states by means of a 25 x 25 probability matrix.
+
+#### Question 4
+
+In the http://www-math.bgsu.edu/~albert/3440 folder, I have the file ``MC_matrix.csv" that gives the 25 x 25 transition matrix for this Markov Chain.
+
+Read this data frame into R and convert it to a matrix.
+```{r}
+Mc_martix <- read_csv("http://www-math.bgsu.edu/~albert/3440/MC_matrix.csv")
+
+ma <-data.matrix(Mc_martix)
+
+ma
+```
+
+
+#### Question 5
+
+By use of the apply function, confirm that all of the rows of the matrix sum to one, so it is a valid probability matrix.
+
+```{r}
+l <- apply(ma, MARGIN = 1, sum)
+
+l
+```
+
+
+#### Question 6
+
+Suppose three batters come to bat during a half-inning. Starting at the "000 0" state, find the probability of ending up at the "110 1" state.
+```{r}
+ma
+```
+find the probability of ending up at the "110 1" state is: 0.00000000
+
+#### Question 7
+
+Suppose that there currently runners at first and second with one out (state "110 1"). Find the probability that the inning is over (state "3") after two plays.
+```{r}
+ ma %*% ma %*% ma
+```
+Find the probability that the inning is over (state "3") after two plays is 0.7901218
+
+#### Question 8
+
+Compute the fundamental matrix for this Markov Chain.
+
+Using this matrix ...
+
+Starting at the "000 0" state, how many batters will there be before 3 outs?
+
+Starting at the "100 1" state, how many batters will there be before 3 outs?
+
+```{r}
+fm <- solve(diag(24) - ma[1:24, 1:24])
+fm
+```
+Starting at the "000 0" state, how many batters will there be before 3 outs? 0.05172524
+
+Starting at the "100 1" state, how many batters will there be before 3 outs? 0.08170061

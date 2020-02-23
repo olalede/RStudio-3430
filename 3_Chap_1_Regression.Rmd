@@ -1,0 +1,151 @@
+---
+title: "Assignment 3"
+author: "Olaleye Damilare"
+date: "02/06/20"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      message = FALSE,
+                      warning = FALSE)
+```
+
+#### Regression Analysis
+
+Data is from the ```mpg``` dataset in the ```ggplot2``` package.  Interested in predicting the highway mileage (variable ```hwy```) from the engine displacement (variable ```displ```).
+
+We start by constructing a scatterplot.
+
+```{r}
+library(tidyverse)
+ggplot(mpg, aes(displ, hwy)) +
+  geom_point()
+```
+
+Want to fit a "best line" of the form
+$$
+hwy = \beta_0 + \beta_1 disp
+$$
+
+1.  The best line is defined by a least-squares procedure -- want to obtain the intercept and slope of this best line.
+
+2.  Suppose the best line coefficients are ($b_0, b_1)$.  Then given a value of ```disp``` we can predict a car's mileage (these are called fitted values or predicted values):
+$$
+\hat{hwy} = b_0 + b_1 disp
+$$
+
+3.  The residual is the difference between the actual mileage and the predicted mileage:
+$$
+r = hwy - \hat{hwy}
+$$
+
+#### The ```lm``` function
+
+The ``lm`` function is a popular R function for fitting regression models.
+
+The basic syntax is
+
+lm(y ~ x, data = df)
+
+where y is the response variable, x is the predictor, and df is the data frame containing the two variables.
+
+Here I want to predict highway mileage (hwy) using the engine displacement (disp) and the data frame is mpg.
+
+```{r}
+lm(hwy ~ displ, data = mpg)
+```
+
+I use ggplot to plot the data and overlay the line of best fit.
+
+```{r}
+ggplot(mpg, aes(displ, hwy)) +
+  geom_point() +
+  geom_abline(intercept = 35.698, slope = -3.531)
+```
+
+If you save the lm(), you obtain a lm object that is named fit.
+
+```{r}
+fit <- lm(hwy ~ displ, data = mpg)
+```
+
+This is a special list containing many calculations in this regression.
+
+Learn about components of a lm object by the attributes() function.
+
+```{r}
+attributes(fit)
+```
+
+Extract the coefficients of the best fitting line.
+```{r}
+fit$coef
+```
+
+#### Apply some generic functions to a ```lm``` function
+
+print, summary, plot
+
+#### Questions -- Playing with the lm function
+
+Consider the ```faithful``` dataset -- can one predict the waiting time to the next eruption (variable ```waiting```) from the eruption time (variable ```eruptions```)?
+
+#### Question 1
+
+Construct a scatterplot of eruptions (horizontal) against waiting (vertical).
+```{r}
+library(tidyverse)
+
+eruption = faithful$eruptions
+waiting = faithful$waiting 
+head(cbind(eruption, waiting))
+
+plot(eruption, waiting, col="yellow", main="Scatterplot showing eruptions against waiting")
+
+```
+
+#### Question 2
+
+Using the lm function find the equation of the best line for predicting waiting time from the eruption time.  Add the best line of fit to your scatterplot.
+
+```{r}
+plot(eruption, waiting, col="green", main="Scatterplot for predicting waiting and eruption")
+abline(lm(waiting ~ eruption))
+```
+
+
+#### Question 3
+
+Rerun the lm() function, storing the output to the variable fit.
+
+```{r}
+plot(eruption, waiting, col="blue", main = "Scatterplot of the variable fit")
+fit <- abline(lm(waiting ~ eruption))
+```
+
+
+#### Question 4
+
+Display the first five predicted values and the first five residual values.
+
+```{r}
+fit <- lm(waiting ~ eruption)
+
+head(fit$fitted.values)
+head(fit$residuals)
+```
+
+#### Question 5
+
+Use the summary function on the variable fit to get some new regression output.  Explain what additional information is displayed.
+
+```{r}
+fit <- lm(waiting ~ eruption)
+summary(fit)
+
+```
+The summary above shows the detailed information of the performance and coefficients. The value of the intercept eruption is: a + (b*m) ==> 28.98 + (34.09*m), this makes the "m" constant. The summary above also shows that the linear model is a good fit because the Multiple R-squared is 0.8115 which is near 1. 
+
+
+

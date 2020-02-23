@@ -1,0 +1,36 @@
+---
+title: "Week 4"
+output: html_document
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+install.packages('pixmap')
+
+library(pixmap)
+setwd("cllllalalalalalala")
+
+#convert to pgm file 
+
+logo <- read.pnm('star.pgm')
+str(logo)
+plot(logo)
+
+logo@grey[1:10,1:10]
+
+logo1<- logo
+logo1@grey <- 1 - logo@grey
+plot(logo1)
+
+# the closer it is to 1 from 0.3 the darker it becomes 
+logo2 < logo
+logo2@grey < 1 - (1-logo@grey)*0.3
+plot(logo2)
+
+logo2 <- logo
+logo2@logo[90:147,90:150] <- 0
+plot(logo2)
+# Markov Chains
+ p <- matrix(0, .5, .)

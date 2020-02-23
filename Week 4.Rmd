@@ -1,0 +1,170 @@
+---
+title: "Chapter 3 matrices"
+output: html_document
+---
+
+#Constructing a matrix in R
+#using matrix() function, it takes vector in, matrix out
+
+#Example 1:
+
+M <- matrix(1:10,nrow= 5, ncol = 2) #matrix is filled by columns
+print(M)
+
+#to find or print attributes of M
+attributes(M)
+
+#to find dimension of M
+dim(M)
+
+#we can also use N row M column 
+nrow(M)
+ncol(M)
+
+#to get the class of M
+class(M)
+
+#to arrange numbers in rows
+matrix(1:10, nrow=5, ncol=2, byrow = T)
+
+#matrix recyles
+matrix(1:7,nrow= 5, ncol=2)
+
+#marix returns null values
+matrix(nrow= 5, ncol=2) 
+
+#cbind() column bind and rbind() row bind functions
+x<-c(-1,5,-9,4,5,3)
+y<-c(0,7,5,-2,6,3)
+
+#4 by 2 matrix
+cbind(x,y) 
+#2 by 4 marix
+rbind(x,y)
+
+#5 by 4 matrix with x as 3rd col and y as 4th col
+cbind(M,x,y)
+
+#------Matrix Operations ---------
+
+#each entry of M is multiplied by 2 and added 1
+2*M+1
+
+#each entry of M is squared
+M^2
+
+P <- matrix(1:10, nrow=5, ncol=2, byrow=T)
+
+#entry-wise addition
+M+P
+M-P
+
+#entry wise multiplication
+M*P
+
+#multiplication of matrices in Linear Alg 
+M %*% P #M (5 by 2) and P (5 by 2) can't be multiplied in Linear Alg
+
+#Transpose to solve the multiplication t()
+M %*% t(P)
+
+# indexing and filtering on matrices
+
+#to extract (1,2)th entry
+M
+M[1,2]
+
+#to extract second row vector
+M[2,]
+
+#to extract first col
+M[,1]
+
+#extract 2nd and 3rd cols (matrix)
+M
+M[c(2,3),]
+
+#to convert vector to matrix, this extract the first col (5 by 1 matrix)
+M[,1,drop=F]
+
+#the same as above using the function as.matrix
+as.matrix(M[,1])
+
+#print logical values if M is greater than 4
+M
+M > 4
+
+#gives all the values in the matix that are greater than 4
+M
+M[M>4]
+
+#to extract rows with 1st entry greater than 3 and 2nd entry grater than 8
+M[M[,1] > 3 & M[,2] > 8]
+
+
+#Example - extract a matrix of pairwise distances between row Vector of a given matrix
+
+pDist <- function(x,y,p=2){
+ sum(abs(x-y)^p)^(1/p)
+ 
+}
+
+n <- nrow(M)
+
+D <- matrix(nrow =  n, ncol = n)
+for(i in 1:n)
+  for(j in 1:n)
+  D[i,j]=pDist(M[i,],M[j,])
+  
+  
+  print(D, digits=4)
+
+for(i in 1:(n-1))
+ for(j in (i-1) n){
+  D[i,j] <- pDist(M[i,], M[j,])
+  D[j,i] <- D[i,j]
+ }
+ print(D)
+ 
+#apply() function
+#apply(matrix,margin,function) margin=1 means row, margin=2 means col
+
+#calcualte sums of each row
+apply(M,MARGIN = 1, sum) 
+
+#calculate sum of each col
+apply(M,MARGIN = 2, sum)
+
+oddCount <- function(x){
+  sum(x %% 2 = 1)
+  
+}
+apply(M, Margin=2, oddCount)
+
+#define function inside the apply to compute the odd numbers for each column 1.e the Euclidean norm of each row
+apply(M, 1, funtion(x) sqrt(sum(x^2)))
+
+#to compute min and max of each column
+apply(M, 2, function(x) c(min(x), max(x)))
+
+#to compute min and std of each col
+apply(M, 2, function(x) c(mean(x), sd(x)))
+
+#which() function is used to find the indeces on matrices
+x<-c(-1,3,-4,5,-2,6,2)
+which(x > 1)
+
+#which() on matrices example, this returns indices of entries of M >= 25 when M is viewed as a vector 
+which(M >= 25)
+which(M >= 25,arr.ind = T)
+
+#Find outliers for each col of a given matrix
+outliers <- function(x){
+q <- quantile(x)
+iqr <- q[4] - q[2]
+indices <- which ((x > q[4] + 1.5 *iqr)|(x < q[2] - 1.5 *iqr))
+x[indices]
+}
+outliers(X)
+M <- matrix(rnorm(300), nrow= 100, ncol =3)
+apply(M, 2, outliers)

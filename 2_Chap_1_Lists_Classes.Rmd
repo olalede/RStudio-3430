@@ -1,0 +1,118 @@
+---
+title: "Assignment 2"
+author: "Damilare Olaleye"
+date: "02-02-2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#### Chapter 1 (continued)
+
+#### Preview of Some R Data Structures
+
+We are already familiar with vectors, scalars, character strings, and data frames.  We'll talk about some other objects such as ...
+
+- matrices (Chapter 3)
+- lists (Chapter 4)
+- factors and tables (Chapter 5)
+- classes and generic structures (Chapter 9)
+
+#### Introduction to Lists
+
+A list is a container for values that can be of different types.
+
+Example:  Suppose you want to record for a particular student:  (1) his age, (2) his name, (3) ages of his parents
+
+Create a list with three components (a scalar, a character string, and a numerica vector):
+
+```{r}
+Joe <- list(age = 17, name = "Joe Smith",
+            parent_ages = c(42, 38))
+```
+
+Say I want to extract Joe's name (use $ sign):
+
+```{r}
+Joe$name
+```
+
+#### Question 1
+
+For your favorite professional sports team, construct a list ```team``` containing its ```name```, the first ```year``` it was in existence, and a vector ```wins``` containing the number of wins for the last three seasons.
+
+```{r}
+sport_team <- list(name="Arsenal Fc", year=1886, wins= 571)
+```
+
+Display the ```wins``` for your team.
+
+```{r}
+sport_team$wins
+```
+
+#### Example of a list:  the ```hist``` function
+
+Suppose you want to construct a histogram of some numeric data.
+
+1.  Have to choose breakpoints for the bins.
+
+2.  Compute the midpoints of the bins.
+
+3.  Count the number of observations in each bin.
+
+4.  Construct a graph of the counts using bars.
+
+Here we construct a histogram of waiting times for Old Faithful -- nothing is being stored.
+
+```{r}
+hist(faithful$waiting)
+```
+
+Here we rerun this, setting ```plot = FALSE``` and storing the calculations in the list variable ```h```. 
+
+```{r}
+h <- hist(faithful$waiting, plot = FALSE)
+h
+```
+
+#### Question 2
+
+There are six components of the ```hist``` object.  Write down the components and explain what each component means.
+
+1.) density component: is the density of the cell.
+2.) breaks component: the breaks component tells us where the bins in the histogram start and end.
+3.) counts component: the counts component is the numbers of observations in each bin.
+4.) mids component: is the midpoint of the cells. 
+5.) equidist component: is defined as the logical value indicating if the breaks are equally spaced or not. 
+6.) xname component: is defined as the argument name.
+
+#### Question 3
+
+Change the xname component of h to "Waiting Time".  Display the histogram by typing ```plot(h)```.  What has changed in this display?
+
+Component xname changed to "Waiting Time"
+
+
+Changed xname component of h to "Waiting Time"  then Plot h here
+```{r}
+h$xname <- "Waiting Time"
+plot(h)
+
+```
+
+The headings changed from "Histogram of Faithful waiting" to "Histogram of Waiting Time" 
+#### Introduction to Classes
+
+R is an object-oriented language and objects are instances of classes.
+
+A ```hist``` function is associated with a "histogram" class.
+
+Why do we have classes?
+
+One reason is that they are used by generic functions like ```summary```, ```print```, and ```plot```.  We saw the use of the ```plot``` function above to construct the histogram.
+
+```plot``` has many meanings, depending on the class of the argument.
+

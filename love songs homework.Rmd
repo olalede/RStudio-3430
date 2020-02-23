@@ -1,0 +1,105 @@
+---
+title: "7 Love Songs"
+output: html_document
+author: "Damilare Olaleye"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r}
+library(stringr)
+```
+
+```{r}
+require(ggplot2)
+dat<- data.frame(t=seq(0, 2*pi, by=0.1) )
+ xhrt <- function(t) 16*sin(t)^3
+ yhrt <- function(t) 13*cos(t)-5*cos(2*t)-2*cos(3*t)-cos(4*t)
+ dat$y=yhrt(dat$t)
+ dat$x=xhrt(dat$t)
+ggplot(dat, aes(x, y)) + theme_minimal() +
+geom_polygon(fill = "red") +
+annotate(geom = "text",x = 0, y = 0,
+label = "Happy Valentine's \nDay!",
+size = 12, color = "white")
+```
+
+1. Find the lyrics to two of your favorite love songs. Store the lyrics to the two songs in separate text files in your current working folder.
+
+```{r}
+song_one <- read.delim("loveSongs1.txt")
+song_one
+
+song_two <- read.delim("loveSongs2.txt")
+song_two
+```
+
+
+2. Use the findwords( ) function to find the locations of all of the words in your first love song -- store these locations in the variable song1.
+
+```{r}
+findwords <- function(loveSong1) {
+  txt <- scan(loveSong1, "")  
+  txt <- tolower(gsub('[[:punct:]]+','', txt))
+    wl <- list()  
+    for (i in 1:length(txt)) {
+      wrd <- txt[i]
+      wl[[wrd]] <- c(wl[[wrd]], i)  
+    }   
+    return(wl)
+}
+
+findwords("loveSongs1.txt") -> song1
+(song1)
+
+```
+
+3.  Find the locations of the word "love" in your song.
+
+```{r}
+str_locate(songone, "love")
+str_locate(songone, "love")
+```
+
+4.  By use of the lapply function, find the number of times each word is used in your song.
+
+```{r}
+
+```
+
+5.  By use of the lapply function, find the location of the first time each word is used in your song.
+```{r}
+each_word <-lapply(song1,1:1)
+
+```
+
+
+6.  By use of the function alphawl(), sort your list alphanumerically.  Demonstrate that it works.
+```{r}
+alphawl <- function(wrdlst){
+ nms <- names(wrdlst) 
+ sn <- sort(nms)
+ return(wrdlst[sn])
+}
+
+alphawl(song1)
+```
+
+
+7.  By use of the function freqwl(), sort your list by the word frequency.  Demonstrate that is works.
+```{r}
+freqwl <- function(wrdlst){
+  freqs <- sapply(wrdlst,length)
+  return(wrdlst[order(freqs)])
+}
+
+freqwl(song1)
+```
+
+
+8.  Repeat questions 2 and 3 for your second song.  Compare the love in your two songs.
+```{r}
+
+```
+

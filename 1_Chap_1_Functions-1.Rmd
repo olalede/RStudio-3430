@@ -1,0 +1,192 @@
+---
+title: "Assignment 1"
+author: "Damilare Olaleye"
+date: "01/28/2020"
+
+output:
+  html_document: default
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+```
+
+#### Chapter 1:  Review and Introduction to Functions
+
+A basic part of R programming is the function.  Here is a simple example of a function that will count the number of odd numbers in a vector of integers.
+
+Note some basic things about a function:
+
+- use keyword `function` and `x` is the input
+- surround commands with curly brackets
+- output of function is in the `return` statement
+- illustrating a `for` loop
+- illustrating the modulo operator `%%`
+
+```{r}
+oddcount <- function(x)  {
+   k <- 0  # assign 0 to k
+   for (n in x)  {
+      if (n %% 2 == 1) k <- k + 1  # %% is the modulo operator
+   }
+   return(k)
+}
+```
+
+Let's try it out:
+
+```{r}
+oddcount(4)
+```
+
+
+```{r}
+oddcount(c(1, 2, 5, 7, 8))
+```
+
+#### Question 1
+
+The book says that one could also write the loop using indices:
+
+```
+for (i in 1:length(x)){
+  if (x[i] %% 2 == 1) k <- k + 1
+}
+```
+
+Write a new function using this alternative loop and try the function out on a vector of integers.
+
+```{r}
+evenCount <- c(2,4,6,8,10,12,14,16,18,20)
+
+newFunc <- function(x) {
+    t <- 0
+    for (i in x){
+        t <- t + i
+    }
+    return(t)
+}
+
+newFunc(evenCount)
+
+
+```
+#### Eliminating Loops
+
+By the way, I think it is more efficient (and quicker) to avoid looping by using vector arithmetic.  
+
+I replace the body of the function with a single line -- `x %% 2 == 1` will check if each element of x is odd and the `sum` will count the number of `TRUE`s.  Note that I don't need to use a `return` function -- the last computed value will be returned.
+
+
+```{r}
+oddcount <- function(x)  {
+   sum( x %% 2 == 1)
+}
+oddcount(c(1, 2, 3, 5, 7, 9))
+```
+
+#### Question 2
+
+Write a function that counts the number of integers in a vector that are divisible by 3.  Assume that all integers are three digits or fewer.  Test the function on a vector of integers to make sure it works.
+
+```{r}
+
+oddcount <- c(1, 2, 3, 5, 7, 9)
+newFunc <- function(x) {
+    t <- 0
+    for (i in x){
+      if (i %% 3 == 0) t = t+1
+    }
+    return(t)
+   
+}
+
+ newFunc(oddcount)
+
+```
+
+
+#### Question 3 (Scoping Rules)
+
+- Variables defined within a function are said to be local -- they are only known within the function.
+
+- One can make a variable in a function global by using the superassignment operator <<-
+
+In the oddcount() function, demonstrate that `k` is a local variable by evaluating it outside of the function.
+
+```{r}
+k = 5
+
+oddcount <- function(x)  {
+   k <- 0  # assign 0 to k
+   for (n in x)  {
+      if (n %% 2 == 1) k <- k + 1  # %% is the modulo operator
+   }
+   return(k)
+}
+ 
+oddcount(k)
+
+```
+
+Rewrite the function to make `k` a global variable and demonstrate that it is indeed global.
+
+
+```{r}
+#global variable 
+k =3
+y = 2
+
+
+# declear a local variable d and l
+
+oddcount=function(x){
+  d= 5
+  k <<- 10
+  return(d+x+y)
+}
+
+oddcount(k)
+```
+
+#### Default Arguments
+
+Sometimes it is useful to have default arguments in a function.
+
+Here is a simple function that will choose as default a nice color and fill for a histogram.
+
+```{r}
+myhist <- function(var, Color = "white", Fill = "tan"){
+  hist(var, border = Color, col = Fill)
+}
+myhist(mtcars$mpg)
+```
+
+You can override these options if you want.
+
+```{r}
+myhist(mtcars$mpg, Color = "blue")
+```
+
+#### Question 4
+
+The `plot` function is a simple way to construct a scatterplot of two vectors.  Write a function `myplot` that accepts two vector inputs `x` and `y` and by default makes the color of the points blue (col = "blue") and chooses a solid dot shape (pch = 19).  Show that it works.
+
+```{r}
+
+  myplot <- function(x, y, col = "blue"){
+  plot(x,y, pch = 19, col = col, main="Scatterplot of two vectors")
+ 
+  }
+x <- c(2,4,5,6,7,8,9,10)
+y <- c(4,2,5,6,1,3,9,4)
+myplot(x, y)
+ # myplot(mtcars$mpg)
+
+```
+
