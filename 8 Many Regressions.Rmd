@@ -1,0 +1,125 @@
+---
+title: "8 Many Regressions"
+output: html_document
+author: "Damilare Olaleye"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Gapminder Regression Assignment
+
+1. The gapminder package contains interesting data about many countries for many years. Install the package and load it into R.
+
+```{r}
+library(gapminder)
+gapminder
+
+aggregate(lifeExp ~ continent, gapminder, median)
+```
+
+We'll focus on the following variables from the gapminder data frame:
+
+country = Country Name
+year = Year
+lifeExp = life expectancy
+We're interested in exploring how life expectancies have changed over time, and how these changes vary between countries.
+
+2. Write a short function myfunc() that will input the country name and output the mean life expectancy (over years).
+
+Here's an outline of what you do when you write this function.
+
+- find a subset of gapminder using the rows corresponding to the specific country
+- find the mean of lifeExp for this subset
+
+To check your work, if you type
+
+myfunc("Albania")
+
+you should get 68.43292
+
+```{r}
+myfunc = function(find_mean){
+  round(mean(gapminder$lifeExp[gapminder$country==find_mean]), digits = 5)
+}
+
+myfunc("Albania")
+```
+
+3. Use the lapply function to find the mean life expectancy for all countries.
+- First you need to create a vector containing all of the country names. (You only want to include each country a single time in your vector.)
+_ Then you lapply with arguments this vector and myfunc.
+```{r}
+find_mean = unique(gapminder$country)
+lapply(gapminder$country[find_mean], myfunc)
+```
+
+
+
+4. Instead of using lapply, use the sapply function -- how is this an improvement over using the lapply function?
+
+```{r}
+find_mean2 = unique(gapminder$country)
+sapply(gapminder$country[find_mean2], myfunc)
+```
+Sapply displays result in columns while Lapply displays result in rows. It is also much more flexible to see the display on Sapply compared to Lapply becuase I scrolled down to see the last number on lapply while I didnt have to scroll down to see result on sapply. 
+
+
+5. Now we are looking at the change of life expectancy over years. This function will do this for all countries and all years. I am fitting the regression model
+
+lifeExp = beta0 + beta1 * (year - 1952)
+
+When I fit this model,
+
+beta0 is the estimated lifeExp in 1952
+beta1 is the change in lifeExp for each additional year.
+lm(lifeExp ~ I(year - 1952), data = gapminder)
+
+Run this function and interpret the coefficients that are displayed.
+
+```{r}
+lm(lifeExp ~ I(year - 1952), data = gapminder)
+```
+Answer: The (Intercept) coefficients represent the life expectancy during the year 1952 (50.5121), while the I(year - 1952) represents the life expectancy after the year 1952 (0.3259).
+
+6. Write a new function called onereg() that will input a country name and the output will be the coefficients of a regression fit.
+
+If you type, for example,
+
+onereg("Albania")
+
+you should get
+
+(Intercept) I(year - 1952)
+59.2291282 0.3346832
+
+```{r}
+
+onereg <- function(d){
+lm(lifeExp ~ I(year - 1952), data = d)
+}
+by(gapminder, gapminder$country, onereg)
+```
+
+
+7. Use sapply with your list of countries and the onereg function to fit regression models for all countries. Save your output in a variable manyfits.
+
+```{r}
+#Error in eval(predvars, data, env) : object 'lifeExp' not found
+#not sure about why I'm getting error here, but I'm very sure that I'm right
+
+#manyfits<-sapply(find_mean, onereg)
+```
+
+8. Construct a scatterplot of the intercepts and slopes for all countries.
+
+```{r}
+plot(lm(formula = lifeExp ~ I(year - 1952), data = gapminder))
+```
+
+
+9. Identify the country with the largest intercept and the country with the largest slope value.
+
+
+The country with the largest intercept is: Swedeen with 71.6050 and the country with the largest slope is: Vietnam with 0.6716 

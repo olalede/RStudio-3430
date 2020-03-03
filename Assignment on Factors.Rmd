@@ -1,0 +1,161 @@
+---
+title: "Assignment on Factors"
+author: "Damilare Olaleye"
+date: "2/27/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(LearnBayes)
+```
+
+Assignment on Factors
+
+The dataset studentdata in the LearnBayes package contains measurements from 657 students in an introductory statistics class.
+```{r}
+
+head(studentdata)
+```
+
+
+1. Examine the factor variable Drink. Find the values, levels of this variable.
+
+```{r}
+drink_variable = data.frame(studentdata)
+str(drink_variable['Drink'])
+```
+
+
+2. Try replacing the first value of Drink to "tea". You should get an error?  Fix this so you don't get an error?
+
+```{r}
+#This displays an error
+#drink_variable[1] = "tea"
+#drink_variable
+
+#drink_variable$m.Drink = with(drink_variable,drink_variable="tea",stringsAsFactros=F)
+
+drink_variable$Drink = (factor(drink_variable$Drink, levels = c("milk","pop","water","tea")))
+levels(as.factor(drink_variable$Drink))
+
+drink_variable$Drink[1] = 'tea'
+head(drink_variable['Drink'])
+```
+
+
+3. Using the tapply function, find the median number of pairs of shoes owned by men and women.
+
+```{r}
+using_tapply <- with(drink_variable[complete.cases(drink_variable),], tapply(Shoes, Gender, median))
+using_tapply
+```
+
+
+4. Using the tapply function, find the median number of pairs of shoes owned by students classified by gender and favorite drink.
+
+```{r}
+classfier_tapply <- with(drink_variable[complete.cases(drink_variable),], tapply(Shoes, list(Drink, Gender), median))
+classfier_tapply
+```
+
+
+5. Using the split function, split the student heights in two groups by gender -- store the output in the variable Heights.
+
+```{r}
+Heights <- with(drink_variable[complete.cases(drink_variable), ], split(Height, Gender))
+head(Heights)
+```
+
+6. Using the lapply function, find the maximum height for each gender. (By the way, there is some missing values, so you will have to remove them by the na.rm = TRUE option.) Are you surprised by the answer? Why?
+
+```{r}
+lapply(Heights, max)
+```
+
+
+7. Construct a bar graph of the Drink variable.
+
+```{r}
+barplot(main="Drink Variable Bar Graph",cex.main=1,col="blue",col.main="blue",table(drink_variable$Drink))
+```
+
+
+8. By changing the order of the levels of the factor variable, redraw the bar graph so that the frequencies are decreasing from left to right.
+
+```{r}
+drink_variable$Drink = (factor(drink_variable$Drink, levels = c("tea","milk","pop","water")))
+barplot(main="Freq increasing from Left to Right",cex.main=1,col.main="green",col= "green",table(drink_variable$Drink))
+```
+
+
+9. Use the table function to tabulate all of the students by Gender and Drink choice.
+
+```{r}
+table(list(drink_variable$Gender, drink_variable$Drink))
+```
+
+
+10. By using the prop.table() function, find the proportion of men who prefer milk and the proportion of women who prefer milk.
+
+```{r}
+prop.table(table(list(drink_variable$Gender, drink_variable$Drink))[,4])
+```
+
+
+11. Define a new variable Sleep in the studentdata data frame that is equal to the difference in the WakeUp and ToSleep times.
+
+```{r}
+drink_variable['Sleep'] = drink_variable$WakeUp - drink_variable$ToSleep
+drink_variable$Sleep
+```
+
+
+12. What is the mean amount of sleep of these students?
+```{r}
+mean_amt <- mean(drink_variable$Sleep, na.rm = T)
+mean_amt
+```
+
+
+13. Use the cut function to classify students as Light or Heavy sleepers if they get less than or more than 7.5 hours of sleep respectively -- call the new variable CSleep.
+
+```{r}
+drink_variable['CSleep'] <- cut(drink_variable$Sleep, breaks = c(-Inf,7.5, Inf), labels = c('Light','Heavy'))
+```
+
+
+14. Use the table function to classify all students by Gender, Drink choice, and CSleep.
+
+```{r}
+classfiy_students <- table(list(drink_variable$Gender, drink_variable$Drink, drink_variable$CSleep))
+classfiy_students
+```
+
+
+15. Graph the counts in the table constructed in 14.
+```{r}
+plot(main="Classify all students by Gender, Drink choice, and CSleep",col="yellow",classfiy_students)
+```
+
+
+16. Using the apply function three times, find the three marginal tables of Gender by Drink, Gender by CSleep,and Drink by CSleep.
+```{r}
+apply(table(drink_variable$Gender, drink_variable$Drink), 1, sum)
+apply(table(drink_variable$Gender, drink_variable$CSleep), 1, sum)
+apply(table(drink_variable$Drink, drink_variable$Sleep), 1, sum)
+```
+
+
+17. By using code, identify the combination of (Gender, Drink, CSleep) that has the highest frequency.
+```{r}
+highest_freq<-data.frame(table(drink_variable$Gender, drink_variable$Drink, drink_variable$CSleep))
+ highest_freq[highest_freq$Freq == max(highest_freq$Freq), ]
+ 
+```
+
+
+ 

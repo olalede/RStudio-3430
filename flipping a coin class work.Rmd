@@ -1,0 +1,30 @@
+---
+title: "Rolling a die week 5"
+author: "Damilare Olaleye"
+date: "3/3/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Rolling a die
+#This draw 10 random numbers from 1:6 allowing replacement
+sample(1:6,size=10,replace=T)
+
+#error
+sample(1:6,size=10,replace=F)
+
+#the same as sample(1:6, size=6, replace=F). Random permutation of 1:6
+sample(1:6)
+
+#flipping a fair coin
+table(sample(0:1,size=100,replace=T))
+
+#flipping a non fair coin
+table(sample(0:1,size=100,replace=T, prob = c(0.7,0.3)))
+
+#replicate function
+#replicate(12, sample(1:6,size=2)
+

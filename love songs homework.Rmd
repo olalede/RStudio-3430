@@ -11,6 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(stringr)
 ```
 
+
 ```{r}
 require(ggplot2)
 dat<- data.frame(t=seq(0, 2*pi, by=0.1) )
@@ -51,26 +52,27 @@ findwords <- function(loveSong1) {
 }
 
 findwords("loveSongs1.txt") -> song1
-(song1)
+head(song1)
 
 ```
 
 3.  Find the locations of the word "love" in your song.
 
 ```{r}
-str_locate(songone, "love")
-str_locate(songone, "love")
+song1$love
+
 ```
 
 4.  By use of the lapply function, find the number of times each word is used in your song.
 
 ```{r}
-
+lapply(song1, length)
 ```
 
 5.  By use of the lapply function, find the location of the first time each word is used in your song.
 ```{r}
-each_word <-lapply(song1,1:1)
+
+lapply(song1, function(elem) elem[1])
 
 ```
 
@@ -98,8 +100,35 @@ freqwl(song1)
 ```
 
 
-8.  Repeat questions 2 and 3 for your second song.  Compare the love in your two songs.
+8.  Repeat questions 2 and 3 for your second song. Compare the love in your two songs.
 ```{r}
+# question 2
+
+findwords <- function(loveSong2) {
+  txt <- scan(loveSong2, "")  
+  txt <- tolower(gsub('[[:punct:]]+','', txt))
+    wl <- list()  
+    for (i in 1:length(txt)) {
+      wrd <- txt[i]
+      wl[[wrd]] <- c(wl[[wrd]], i)  
+    }   
+    return(wl)
+}
+
+findwords("loveSongs2.txt") -> song2
+head(song2)
+
+
 
 ```
+
+question 3
+```{r}
+song2$love
+```
+
+Comparing the love
+
+love appeared 8 times in song 2 compared to song 1 where love appeared 15 times
+
 

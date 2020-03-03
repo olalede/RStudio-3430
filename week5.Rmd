@@ -1,0 +1,138 @@
+---
+title: "factors week 5"
+author: "Damilare Olaleye"
+date: "2/29/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+# Data frames - lists with components being vectors of the same length
+
+sapply output vector
+lapply output lists
+
+students <- c("John",'Mary',"Bob","Jessica")
+
+majors <- c('math','math','stat','cs')
+
+hw_avr <- c(90,91,89,90)
+
+quiz_avr <- c(87,88,85,89)
+
+exam_avr <- c(88,90,91,89)
+
+
+
+list(students,majors,hw_avr,quiz_avr,exam_avr)
+
+df <- data.frame(students,majors,hw_avr,quiz_avr,exam_avr)
+df
+
+str(df)
+
+colnames(df) # extract column names
+length(df)
+
+
+# extract first column
+
+df$students
+
+df[['students']]
+
+df[[1]]
+
+df[,1]
+
+
+
+df[2,4] # quiz average of Mary
+df[2,5]
+
+
+# adding a new column
+
+df$final_grade <- 0.2*df$hw_avr+0.3*df$quiz_avr+0.5*df$exam_avr
+
+df
+
+# or 
+df$final_grade <- with(df,0.2*hw_avr+0.3*quiz_avr+0.5*exam_avr)
+df
+
+
+# tapply()
+
+tapply(df$exam_avr,df$majors,max)
+
+
+
+# cbind() and rbind()
+
+df=rbind(df,list("Mike","cs",87,87,87,87))
+
+df # there is no factor level "Mike" for "students"
+
+complete.cases(df) # identify rows which have at least one NA value
+df[complete.cases(df),]
+
+
+# to fix
+df <- data.frame(students,majors,hw_avr,quiz_avr,exam_avr,stringsAsFactors = F) # stringsAsFactors = F - don't convert string vectors into a factor
+
+str(df)
+
+tapply(df$exam_avr,df$majors,max)
+
+
+
+# more examples for tapply()
+
+library(gapminder)
+
+str(gapminder)
+
+head(gapminder)
+
+
+
+y=with(gapminder,tapply(lifeExp,year,mean)) # average lifeExp for different years
+
+plot(unlist(dimnames(y)),y,xlab='year',ylab='mean lifeExp')
+
+
+sort(with(gapminder,tapply(lifeExp,country,mean)) )# sorted average lifeExp during 1952-2007 for different countries
+
+with(gapminder,tapply(lifeExp[year==1952],continent[year==1952],mean)) # average lifeExp during 1952 for different continents
+
+with(gapminder,tapply(lifeExp,list(year,continent),mean)) # average lifeExp for different continents for each time period
+
+with(gapminder,tapply(pop,list(year,continent),mean))
+
+newdf=with(gapminder,split(lifeExp,year))
+newdf$`1952`
+
+myfunc <- function(df){
+  lm(lifeExp ~ gdpPercap, data = df)
+}
+by(gapminder,gapminder$continent, myfunc) # split gapminder based on continent and appy myfunc
+
+# Factors
+
+
+
+x <- c(3,4,3,5,6,4)
+
+xf <- factor(x) # level = set of distict values in x
+
+xf
+
+length(xf)
+
+
+
+xf[6] <- 12 # 12 is not "illegal label"
+
+levels(xf) <- c(levels(xf),12)
